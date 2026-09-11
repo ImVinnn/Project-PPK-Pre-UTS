@@ -52,35 +52,40 @@ Rendering: **server-side rendering** dengan Blade. Tanpa build step.
 
 ## Cara Menjalankan
 
+Setup standar Laravel, tidak ada yang aneh — cuma nama DB dan `storage:link`
+yang perlu diperhatikan.
+
+### Setup awal (baru clone)
+
 ```bash
-# 1. Clone repository
 git clone <url-repo>
 cd project-ppk
 
-# 2. Install dependensi
 composer install
-
-# 3. Siapkan file konfigurasi
 cp .env.example .env
 php artisan key:generate
 
-# 4. Buat database bernama 'ppk_reservasi' di phpMyAdmin,
-#    lalu sesuaikan DB_DATABASE, DB_USERNAME, DB_PASSWORD di .env
+# buat database MySQL bernama 'ppk_reservasi',
+# lalu sesuaikan DB_DATABASE/DB_USERNAME/DB_PASSWORD di .env
 
-# 5. Buat tabel dan isi data awal
 php artisan migrate --seed
-
-# 6. Buat symbolic link untuk foto laporan
-php artisan storage:link
-
-# 7. Jalankan
+php artisan storage:link   # tanpa ini, foto laporan 404
 php artisan serve
 ```
 
-Buka `http://localhost:8000`.
+Buka `http://localhost:8000`. Nyalakan **MySQL** lewat Laragon/XAMPP dulu —
+Apache tidak perlu.
 
-Pastikan **MySQL sudah dinyalakan** lewat control panel Laragon/XAMPP.
-Apache tidak perlu dijalankan.
+### Setelah `git pull`
+
+```bash
+composer install          # kalau composer.lock berubah
+php artisan migrate       # kalau ada migration baru
+php artisan serve         # untuk run
+```
+
+`.env` dan `storage:link` punya lokal masing-masing, tidak perlu diulang
+setiap pull.
 
 ---
 
