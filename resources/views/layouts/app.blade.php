@@ -104,6 +104,9 @@
                         <a class="small text-decoration-none" style="color: #f5f3ed;" href="{{ route('admin.accounts.index') }}">
                             Kelola Akun
                         </a>
+                        <a class="small text-decoration-none" style="color: #f5f3ed;" href="{{ route('admin.faculties.index') }}">
+                            Fakultas
+                        </a>
                     @endif
                     <span class="small" style="color: #c7cdd2;">{{ auth()->user()->name }}</span>
                     <form method="POST" action="{{ route('logout') }}">
