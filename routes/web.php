@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\BuildingController;
+use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Admin\FacultyController;
 use App\Http\Controllers\AuthController;
 use App\Support\Status;
@@ -39,5 +40,13 @@ Route::middleware(['auth', 'active'])->group(function (): void {
                 ->name('accounts.status.update');
             Route::resource('faculties', FacultyController::class)->except('show');
             Route::resource('buildings', BuildingController::class)->except('show');
+
+            Route::get('/facilities', [FacilityController::class, 'index'])->name('facilities.index');
+            Route::get('/facilities/create', [FacilityController::class, 'create'])->name('facilities.create');
+            Route::post('/facilities', [FacilityController::class, 'store'])->name('facilities.store');
+            Route::get('/facilities/{facility}/edit', [FacilityController::class, 'edit'])->name('facilities.edit');
+            Route::put('/facilities/{facility}', [FacilityController::class, 'update'])->name('facilities.update');
+            Route::patch('/facilities/{facility}/deactivate', [FacilityController::class, 'deactivate'])
+                ->name('facilities.deactivate');
         });
 });
