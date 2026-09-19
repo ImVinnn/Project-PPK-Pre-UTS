@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AccountController;
+use App\Http\Controllers\Admin\BuildingController;
 use App\Http\Controllers\Admin\FacultyController;
 use App\Http\Controllers\AuthController;
 use App\Support\Status;
@@ -37,5 +38,6 @@ Route::middleware(['auth', 'active'])->group(function (): void {
             Route::patch('/accounts/{account}/status', [AccountController::class, 'updateStatus'])
                 ->name('accounts.status.update');
             Route::resource('faculties', FacultyController::class)->except('show');
+            Route::resource('buildings', BuildingController::class)->except('show');
         });
 });

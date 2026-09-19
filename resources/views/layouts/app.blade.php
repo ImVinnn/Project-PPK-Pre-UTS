@@ -107,6 +107,9 @@
                         <a class="small text-decoration-none" style="color: #f5f3ed;" href="{{ route('admin.faculties.index') }}">
                             Fakultas
                         </a>
+                        <a class="small text-decoration-none" style="color: #f5f3ed;" href="{{ route('admin.buildings.index') }}">
+                            Gedung
+                        </a>
                     @endif
                     <span class="small" style="color: #c7cdd2;">{{ auth()->user()->name }}</span>
                     <form method="POST" action="{{ route('logout') }}">
