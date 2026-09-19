@@ -91,8 +91,22 @@
 <body>
     <header class="site-header">
         <div class="container d-flex align-items-center justify-content-between py-3">
-            <a class="wordmark" href="/">Fasilitas Kampus</a>
-            <a class="btn btn-brass btn-sm px-3" href="/login">Login</a>
+            <a class="wordmark" href="{{ route('facilities.index') }}">Fasilitas Kampus</a>
+
+            @guest
+                <div class="d-flex gap-2">
+                    <a class="btn btn-brass btn-sm px-3" href="{{ route('register') }}">Daftar</a>
+                    <a class="btn btn-brass btn-sm px-3" href="{{ route('login') }}">Login</a>
+                </div>
+            @else
+                <div class="d-flex align-items-center gap-3">
+                    <span class="small" style="color: #c7cdd2;">{{ auth()->user()->name }}</span>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="btn btn-brass btn-sm px-3">Logout</button>
+                    </form>
+                </div>
+            @endguest
         </div>
     </header>
 
