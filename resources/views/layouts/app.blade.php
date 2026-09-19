@@ -100,6 +100,11 @@
                 </div>
             @else
                 <div class="d-flex align-items-center gap-3">
+                    @if (auth()->user()->hasRole(\App\Support\Status::ROLE_ADMIN))
+                        <a class="small text-decoration-none" style="color: #f5f3ed;" href="{{ route('admin.accounts.index') }}">
+                            Kelola Akun
+                        </a>
+                    @endif
                     <span class="small" style="color: #c7cdd2;">{{ auth()->user()->name }}</span>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
