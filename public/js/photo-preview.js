@@ -19,8 +19,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // 2. Cek Format/Tipe File
                 const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+                const allowedTypes = ['image/jpeg', 'image/png'];
                 if (!allowedTypes.includes(file.type)) {
                     alert('Format berkas tidak didukung! Gunakan format JPG, PNG, atau WEBP.');
+                    alert('Format berkas tidak didukung! Gunakan format JPG, JPEG, atau PNG.');
                     photoInput.value = ''; // Reset pilihan berkas
                     previewContainer.classList.add('d-none');
                     return;
