@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             FacultySeeder::class,
             BuildingSeeder::class,
+            FacilitySeeder::class,
         ]);
     }
 }

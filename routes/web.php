@@ -2,15 +2,18 @@
 
 use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\BuildingController;
-use App\Http\Controllers\Admin\FacilityController;
+use App\Http\Controllers\Admin\FacilityController as AdminFacilityController;
 use App\Http\Controllers\Admin\FacultyController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\ReservationController;
 use App\Support\Status;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DamageReportController;
 use App\Http\Controllers\Officer\ReportController as OfficerReportController;
 
-Route::view('/', 'facilities.index')->name('facilities.index');
+Route::get('/', [FacilityController::class, 'index'])->name('facilities.index');
+Route::get('/facilities/{facility}', [FacilityController::class, 'show'])->name('facilities.show');
 
 Route::middleware('guest')->group(function (): void {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -22,9 +25,14 @@ Route::middleware('guest')->group(function (): void {
 Route::middleware(['auth', 'active'])->group(function (): void {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::view('/dashboard', 'dashboard')
-        ->middleware('role:'.Status::ROLE_USER)
-        ->name('dashboard');
+    Route::middleware('role:'.Status::ROLE_USER)->group(function (): void {
+        Route::view('/dashboard', 'dashboard')->name('dashboard');
+        Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
+        Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
+        Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
+        Route::get('/reservations/{reservation}', [ReservationController::class, 'show'])->name('reservations.show');
+        Route::patch('/reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');
+    });
 
     Route::middleware('role:' . Status::ROLE_USER)
         ->prefix('reports')
@@ -62,12 +70,12 @@ Route::middleware(['auth', 'active'])->group(function (): void {
             Route::resource('faculties', FacultyController::class)->except('show');
             Route::resource('buildings', BuildingController::class)->except('show');
 
-            Route::get('/facilities', [FacilityController::class, 'index'])->name('facilities.index');
-            Route::get('/facilities/create', [FacilityController::class, 'create'])->name('facilities.create');
-            Route::post('/facilities', [FacilityController::class, 'store'])->name('facilities.store');
-            Route::get('/facilities/{facility}/edit', [FacilityController::class, 'edit'])->name('facilities.edit');
-            Route::put('/facilities/{facility}', [FacilityController::class, 'update'])->name('facilities.update');
-            Route::patch('/facilities/{facility}/deactivate', [FacilityController::class, 'deactivate'])
+            Route::get('/facilities', [AdminFacilityController::class, 'index'])->name('facilities.index');
+            Route::get('/facilities/create', [AdminFacilityController::class, 'create'])->name('facilities.create');
+            Route::post('/facilities', [AdminFacilityController::class, 'store'])->name('facilities.store');
+            Route::get('/facilities/{facility}/edit', [AdminFacilityController::class, 'edit'])->name('facilities.edit');
+            Route::put('/facilities/{facility}', [AdminFacilityController::class, 'update'])->name('facilities.update');
+            Route::patch('/facilities/{facility}/deactivate', [AdminFacilityController::class, 'deactivate'])
                 ->name('facilities.deactivate');
         });
 });
