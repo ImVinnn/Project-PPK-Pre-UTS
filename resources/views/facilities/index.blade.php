@@ -137,4 +137,6 @@
         {{ $facilities->links() }}
     </div>
 </section>
+
+<script src="{{ asset('js/facility-filter.js') }}"></script>
 @endsection

@@ -185,4 +185,6 @@
         </div>
     </div>
 </section>
+
+<script src="{{ asset('js/slot-picker.js') }}"></script>
 @endsection
