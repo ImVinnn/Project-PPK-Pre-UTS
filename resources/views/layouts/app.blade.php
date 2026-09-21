@@ -111,6 +111,17 @@
                             Gedung
                         </a>
                     @endif
+                    @if (auth()->user()->hasRole(\App\Support\Status::ROLE_USER))
+                        <a class="small text-decoration-none" style="color: #f5f3ed;" href="{{ route('facilities.index') }}">
+                            Katalog Fasilitas
+                        </a>
+                        <a class="small text-decoration-none" style="color: #f5f3ed;" href="{{ route('reservations.index') }}">
+                            Reservasi Saya
+                        </a>
+                        <a class="small text-decoration-none" style="color: #f5f3ed;" href="{{ route('reservations.create') }}">
+                            + Ajukan Reservasi
+                        </a>
+                    @endif
                     <span class="small" style="color: #c7cdd2;">{{ auth()->user()->name }}</span>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
