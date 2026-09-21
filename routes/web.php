@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\FacultyController;
 use App\Http\Controllers\AuthController;
 use App\Support\Status;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DamageReportController;
+use App\Http\Controllers\Officer\ReportController as OfficerReportController;
 
 Route::view('/', 'facilities.index')->name('facilities.index');
 
@@ -24,9 +26,28 @@ Route::middleware(['auth', 'active'])->group(function (): void {
         ->middleware('role:'.Status::ROLE_USER)
         ->name('dashboard');
 
+    Route::middleware('role:' . Status::ROLE_USER)
+        ->prefix('reports')
+        ->name('reports.')
+        ->group(function (): void {
+            Route::get('/', [DamageReportController::class, 'index'])->name('index');
+            Route::get('/create', [DamageReportController::class, 'create'])->name('create');
+            Route::post('/', [DamageReportController::class, 'store'])->name('store');
+            Route::get('/{report}', [DamageReportController::class, 'show'])->name('show');
+        });
+
     Route::view('/officer', 'dashboard')
         ->middleware('role:'.Status::ROLE_OFFICER)
         ->name('officer.dashboard');
+
+    Route::prefix('officer')
+        ->name('officer.')
+        ->middleware('role:' . Status::ROLE_OFFICER)
+        ->group(function (): void {
+            Route::get('/reports', [OfficerReportController::class, 'index'])->name('reports.index');
+            Route::get('/reports/{report}', [OfficerReportController::class, 'show'])->name('reports.show');
+            Route::patch('/reports/{report}/status', [OfficerReportController::class, 'updateStatus'])->name('reports.status.update');
+        });
 
     Route::prefix('admin')
         ->name('admin.')
