@@ -11,6 +11,7 @@ use App\Support\Status;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DamageReportController;
 use App\Http\Controllers\Officer\ReportController as OfficerReportController;
+use App\Http\Controllers\Officer\ReservationController as OfficerReservationController;
 
 Route::get('/', [FacilityController::class, 'index'])->name('facilities.index');
 Route::get('/facilities/{facility}', [FacilityController::class, 'show'])->name('facilities.show');
@@ -55,6 +56,12 @@ Route::middleware(['auth', 'active'])->group(function (): void {
             Route::get('/reports', [OfficerReportController::class, 'index'])->name('reports.index');
             Route::get('/reports/{report}', [OfficerReportController::class, 'show'])->name('reports.show');
             Route::patch('/reports/{report}/status', [OfficerReportController::class, 'updateStatus'])->name('reports.status.update');
+
+            Route::get('/reservations', [OfficerReservationController::class, 'index'])->name('reservations.index');
+            Route::get('/reservations/{reservation}', [OfficerReservationController::class, 'show'])->name('reservations.show');
+            Route::patch('/reservations/{reservation}/approve', [OfficerReservationController::class, 'approve'])->name('reservations.approve');
+            Route::patch('/reservations/{reservation}/reject', [OfficerReservationController::class, 'reject'])->name('reservations.reject');
+            Route::patch('/reservations/{reservation}/cancel', [OfficerReservationController::class, 'cancel'])->name('reservations.cancel');
         });
 
     Route::prefix('admin')
