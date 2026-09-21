@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['brand', 'model', 'stock_total', 'stock_unavailable'])]
+#[Fillable(['facility_id', 'brand', 'model', 'stock_total', 'stock_unavailable'])]
 class EquipmentDetail extends Model
 {
     protected $primaryKey = 'facility_id';
