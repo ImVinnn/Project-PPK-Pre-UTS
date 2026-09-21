@@ -90,7 +90,7 @@
 </head>
 <body>
     <header class="site-header">
-        <div class="container d-flex align-items-center justify-content-between py-3">
+        <div class="container-fluid d-flex align-items-center justify-content-between py-3 px-4">
             <a class="wordmark" href="{{ route('facilities.index') }}">Fasilitas Kampus</a>
 
             @guest
