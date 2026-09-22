@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['room_number', 'floor'])]
+#[Fillable(['facility_id', 'room_number', 'floor'])]
 class RoomDetail extends Model
 {
     protected $primaryKey = 'facility_id';
