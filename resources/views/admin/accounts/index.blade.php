@@ -34,7 +34,13 @@
                         <td class="px-3 fw-medium">{{ $account->name }}</td>
                         <td>{{ $account->email }}</td>
                         <td><span class="badge text-bg-secondary">{{ ucfirst($account->role) }}</span></td>
-                        <td><span class="badge text-bg-light border">{{ ucfirst($account->account_status) }}</span></td>
+                        <td><span class="badge text-bg-light border">{{ match ($account->account_status) {
+                            \App\Support\Status::ACCOUNT_ACTIVE => 'Aktif',
+                            \App\Support\Status::ACCOUNT_PENDING => 'Menunggu Verifikasi',
+                            \App\Support\Status::ACCOUNT_REJECTED => 'Ditolak',
+                            \App\Support\Status::ACCOUNT_INACTIVE => 'Nonaktif',
+                            default => 'Tidak diketahui',
+                        } }}</span></td>
                         <td class="text-end px-3">
                             @if (! $account->hasRole(\App\Support\Status::ROLE_ADMIN))
                                 <form method="POST" action="{{ route('admin.accounts.status.update', $account) }}" class="d-inline-flex gap-2">
