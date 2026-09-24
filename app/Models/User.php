@@ -40,4 +40,13 @@ class User extends Authenticatable
     {
         return $this->role === $role;
     }
+
+    public function dashboardRoute(): string
+    {
+        return match ($this->role) {
+            Status::ROLE_ADMIN => route('admin.dashboard'),
+            Status::ROLE_OFFICER => route('officer.dashboard'),
+            default => route('dashboard'),
+        };
+    }
 }

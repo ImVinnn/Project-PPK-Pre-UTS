@@ -50,6 +50,20 @@ class AuthenticationTest extends TestCase
         ];
     }
 
+    #[DataProvider('roleDashboardProvider')]
+    public function test_authenticated_user_visiting_guest_pages_is_redirected_to_their_dashboard(
+        string $role,
+        string $routeName,
+    ): void {
+        $user = User::factory()->create(['role' => $role]);
+
+        foreach (['login', 'register'] as $guestRoute) {
+            $this->actingAs($user)
+                ->get(route($guestRoute))
+                ->assertRedirect(route($routeName));
+        }
+    }
+
     public function test_pending_account_cannot_log_in(): void
     {
         $user = User::factory()->pending()->create([

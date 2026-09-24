@@ -1,0 +1,45 @@
+<?php
+
+return [
+    'required' => 'Kolom :attribute wajib diisi.',
+    'required_if' => 'Kolom :attribute wajib diisi ketika :other bernilai :value.',
+    'string' => 'Kolom :attribute harus berupa teks.',
+    'email' => 'Kolom :attribute harus berupa alamat email yang valid.',
+    'integer' => 'Kolom :attribute harus berupa bilangan bulat.',
+    'numeric' => 'Kolom :attribute harus berupa angka.',
+    'confirmed' => 'Konfirmasi :attribute tidak cocok.',
+    'unique' => ':Attribute sudah digunakan.',
+    'exists' => 'Nilai :attribute yang dipilih tidak valid.',
+    'in' => 'Nilai :attribute yang dipilih tidak valid.',
+    'date_format' => 'Kolom :attribute harus sesuai format :format.',
+    'after_or_equal' => 'Kolom :attribute harus pada atau setelah :date.',
+    'before_or_equal' => 'Kolom :attribute harus pada atau sebelum :date.',
+    'image' => 'Kolom :attribute harus berupa gambar.',
+    'mimes' => 'Berkas :attribute harus bertipe: :values.',
+    'min' => [
+        'numeric' => 'Nilai :attribute minimal :min.',
+        'string' => 'Kolom :attribute minimal :min karakter.',
+        'file' => 'Ukuran :attribute minimal :min kilobita.',
+        'array' => 'Kolom :attribute minimal :min item.',
+    ],
+    'max' => [
+        'numeric' => 'Nilai :attribute maksimal :max.',
+        'string' => 'Kolom :attribute maksimal :max karakter.',
+        'file' => 'Ukuran :attribute maksimal :max kilobita.',
+        'array' => 'Kolom :attribute maksimal :max item.',
+    ],
+    'lte' => [
+        'numeric' => 'Nilai :attribute tidak boleh melebihi :value.',
+        'string' => 'Kolom :attribute tidak boleh melebihi :value karakter.',
+        'file' => 'Ukuran :attribute tidak boleh melebihi :value kilobita.',
+        'array' => 'Kolom :attribute tidak boleh melebihi :value item.',
+    ],
+    'attributes' => [
+        'name' => 'nama',
+        'password' => 'kata sandi',
+        'faculty_id' => 'fakultas',
+        'building_id' => 'gedung',
+        'facility_id' => 'fasilitas',
+        'stock_unavailable' => 'stok tidak tersedia',
+    ],
+];
