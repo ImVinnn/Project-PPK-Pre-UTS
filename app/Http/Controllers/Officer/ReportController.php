@@ -14,6 +14,7 @@ class ReportController extends Controller
 {
     /**
      * US11 — Tampilkan daftar seluruh laporan kerusakan untuk Petugas.
+     * Mendukung filter status laporan.
      */
     public function index(Request $request): View
     {
@@ -27,40 +28,34 @@ class ReportController extends Controller
 
         $reports = $query->paginate(15)->withQueryString();
 
+        // Hitung jumlah laporan per status untuk indikator tab filter
         $counts = [
-            'all'      => DamageReport::count(),
-            'baru'     => DamageReport::where('status', Status::REPORT_NEW)->count(),
-            'diproses' => DamageReport::where('status', Status::REPORT_IN_PROGRESS)->count(),
-            'selesai'  => DamageReport::where('status', Status::REPORT_COMPLETED)->count(),
-            'ditolak'  => DamageReport::where('status', Status::REPORT_REJECTED)->count(),
+            'all'         => DamageReport::count(),
+            'baru'        => DamageReport::where('status', Status::REPORT_NEW)->count(),
+            'diproses'    => DamageReport::where('status', Status::REPORT_IN_PROGRESS)->count(),
+            'selesai'     => DamageReport::where('status', Status::REPORT_COMPLETED)->count(),
+            'ditolak'     => DamageReport::where('status', Status::REPORT_REJECTED)->count(),
         ];
 
         return view('officer.reports.index', compact('reports', 'selectedStatus', 'counts'));
     }
 
     /**
-     * US11 & US12 — Detail laporan kerusakan, status fasilitas, & reservasi terdampak.
+     * US11 & US12 — Tampilkan detail laporan kerusakan beserta form tindak lanjut petugas.
      */
     public function show(DamageReport $report): View
     {
-        $report->load(['facility.equipmentDetail', 'user']);
+        $report->load(['facility', 'user']);
 
-        // Ambil daftar reservasi approved pada fasilitas ini yang masih/akan berlangsung
-        $impactedReservations = collect();
-        if ($report->facility) {
-            $impactedReservations = $report->facility->reservations()
-                ->approved()
-                ->with('user')
-                ->where('end_time', '>=', now())
-                ->orderBy('start_time', 'asc')
-                ->get();
-        }
-
-        return view('officer.reports.show', compact('report', 'impactedReservations'));
+        return view('officer.reports.show', compact('report'));
     }
 
     /**
      * US12 — Perbarui status dan catatan resolusi laporan oleh Petugas.
+     * Sesuai PRD:
+     * - resolution_note wajib jika status 'selesai' atau 'ditolak'.
+     * - DILARANG menambah/mengisi handled_by atau handled_at.
+     * - Status laporan dan status fasilitas independen.
      */
     public function updateStatus(UpdateReportStatusRequest $request, DamageReport $report): RedirectResponse
     {
@@ -72,39 +67,5 @@ class ReportController extends Controller
             ->route('officer.reports.show', $report)
             ->with('success', 'Status laporan dan catatan resolusi berhasil diperbarui.');
     }
-
-    /**
-     * US12 Tambahan — Perbarui status kondisi fasilitas (active / maintenance) & stock_unavailable.
-     */
-    public function updateFacilityCondition(Request $request, DamageReport $report): RedirectResponse
-    {
-        $facility = $report->facility;
-
-        if (!$facility) {
-            return back()->with('error', 'Fasilitas tidak ditemukan.');
-        }
-
-        $validated = $request->validate([
-            'facility_status'   => 'required|string',
-            'stock_unavailable' => 'nullable|integer|min:0',
-        ]);
-
-        // 1. Update status fasilitas (misal: active / maintenance)
-        $facility->status = $validated['facility_status'];
-        $facility->save();
-
-        // 2. Jika fasilitas berupa Alat, update stock_unavailable
-        if ($facility->isEquipment() && $facility->equipmentDetail) {
-            $maxStock = $facility->equipmentDetail->stock_total;
-            $unavailable = min((int) ($validated['stock_unavailable'] ?? 0), $maxStock);
-
-            $facility->equipmentDetail->update([
-                'stock_unavailable' => $unavailable,
-            ]);
-        }
-
-        return redirect()
-            ->route('officer.reports.show', $report)
-            ->with('success', 'Kondisi fasilitas dan stok tidak dapat digunakan berhasil diperbarui.');
-    }
 }
+

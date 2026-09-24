@@ -36,7 +36,7 @@
     <div class="container d-flex justify-content-between align-items-center">
         <div>
             <h2 class="fw-bold mb-1">Tindak Lanjut Laporan #{{ $report->id }}</h2>
-            <p class="mb-0 text-light opacity-75">Periksa bukti kerusakan, kelola status fasilitas, dan perbarui laporan.</p>
+            <p class="mb-0 text-light opacity-75">Periksa bukti kerusakan dan perbarui status penanganan.</p>
         </div>
         <a href="{{ route('officer.reports.index') }}" class="btn btn-outline-light btn-sm px-3">
             ← Kembali ke Antrean
@@ -46,7 +46,7 @@
 
 <div class="container mb-5">
 
-    {{-- Flash Messages --}}
+    {{-- Flash message sukses --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
             {{ session('success') }}
@@ -54,13 +54,7 @@
         </div>
     @endif
 
-    @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
+    {{-- Global alert errors --}}
     @if ($errors->any())
         <div class="alert alert-danger mb-4">
             <ul class="mb-0">
@@ -72,11 +66,9 @@
     @endif
 
     <div class="row g-4">
-        <!-- Kolom Kiri: Detail Laporan, Foto Bukti, & Reservasi Terdampak -->
+        <!-- Kolom Kiri: Detail Laporan & Foto Bukti -->
         <div class="col-lg-7">
-            
-            <!-- Card 1: Informasi Laporan -->
-            <div class="card card-custom shadow-sm rounded-3 mb-4">
+            <div class="card card-custom shadow-sm rounded-3">
                 <div class="card-header card-header-custom py-3 rounded-top d-flex justify-content-between align-items-center">
                     <h5 class="mb-0 fw-semibold">Informasi Laporan</h5>
                     <span class="badge {{ $report->statusBadge() }} fs-6">{{ $report->statusLabel() }}</span>
@@ -144,118 +136,13 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Card 2: Reservasi Disetujui yang Terdampak -->
-            <div class="card card-custom shadow-sm rounded-3">
-                <div class="card-header card-header-custom py-3 rounded-top d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0 fw-semibold">Reservasi Terdampak (Approved)</h5>
-                    <span class="badge bg-warning text-dark">{{ $impactedReservations->count() }} Jadwal</span>
-                </div>
-                <div class="card-body p-4">
-                    @if ($impactedReservations->isNotEmpty())
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle mb-0">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Pemohon</th>
-                                        <th>Waktu Pinjam</th>
-                                        <th>Jumlah</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($impactedReservations as $reservation)
-                                        <tr>
-                                            <td>
-                                                <strong class="d-block">{{ $reservation->user->name ?? 'Pengguna' }}</strong>
-                                                <small class="text-muted">{{ $reservation->purpose }}</small>
-                                            </td>
-                                            <td class="small">
-                                                <div>{{ $reservation->start_time->format('d M Y') }}</div>
-                                                <div class="text-muted">{{ $reservation->start_time->format('H:i') }} - {{ $reservation->end_time->format('H:i') }} WIB</div>
-                                            </td>
-                                            <td><span class="badge bg-info text-dark">{{ $reservation->quantity ?? 1 }} unit/slot</span></td>
-                                            <td>
-                                                @if (Route::has('officer.reservations.show'))
-                                                    <a href="{{ route('officer.reservations.show', $reservation->id) }}" class="btn btn-sm btn-outline-primary">
-                                                        Detail
-                                                    </a>
-                                                @else
-                                                    <span class="text-muted small">#{{ $reservation->id }}</span>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @else
-                        <p class="text-muted mb-0 small"><em>Tidak ada reservasi aktif/disetujui yang terdampak pada fasilitas ini.</em></p>
-                    @endif
-                </div>
-            </div>
-
         </div>
 
-        <!-- Kolom Kanan: Form Kelola Fasilitas & Status Laporan -->
+        <!-- Kolom Kanan: Form Tindak Lanjut Petugas (US12) -->
         <div class="col-lg-5">
-
-            <!-- Form 1: Control Kondisi Fasilitas & Stok Alat -->
-            @if ($report->facility)
-                <div class="card card-custom shadow-sm rounded-3 mb-4">
-                    <div class="card-header card-header-custom py-3 rounded-top">
-                        <h5 class="mb-0 fw-semibold">Kelola Kondisi Fasilitas</h5>
-                    </div>
-                    <div class="card-body p-4">
-                        <form action="{{ route('officer.reports.facility.update', $report) }}" method="POST">
-                            @csrf
-                            @method('PATCH')
-
-                            <!-- Status Fasilitas (Active / Maintenance) -->
-                            <div class="mb-3">
-                                <label for="facility_status" class="form-label fw-semibold">Status Operasional Fasilitas</label>
-                                <select class="form-select" id="facility_status" name="facility_status" required>
-                                    <option value="{{ \App\Support\Status::FACILITY_ACTIVE }}" @selected($report->facility->status === \App\Support\Status::FACILITY_ACTIVE)>
-                                        🟢 Aktif / Siap Digunakan
-                                    </option>
-                                    <option value="{{ \App\Support\Status::FACILITY_MAINTENANCE }}" @selected($report->facility->status === \App\Support\Status::FACILITY_MAINTENANCE)>
-                                        🔴 Maintenance / Dalam Perbaikan
-                                    </option>
-                                </select>
-                            </div>
-
-                            <!-- Stok Alat Rusak/Unavailable (Hanya jika tipe Alat/Equipment) -->
-                            @if ($report->facility->isEquipment() && $report->facility->equipmentDetail)
-                                <div class="mb-3 p-3 bg-light border rounded">
-                                    <label for="stock_unavailable" class="form-label fw-semibold">
-                                        Stok Rusak / Tidak Dapat Digunakan
-                                    </label>
-                                    <div class="input-group">
-                                        <input type="number"
-                                               class="form-control"
-                                               id="stock_unavailable"
-                                               name="stock_unavailable"
-                                               min="0"
-                                               max="{{ $report->facility->equipmentDetail->stock_total }}"
-                                               value="{{ old('stock_unavailable', $report->facility->equipmentDetail->stock_unavailable) }}">
-                                        <span class="input-group-text">/ {{ $report->facility->equipmentDetail->stock_total }} Unit</span>
-                                    </div>
-                                    <small class="text-muted d-block mt-1">Masukkan jumlah alat yang mengalami kerusakan.</small>
-                                </div>
-                            @endif
-
-                            <button type="submit" class="btn btn-outline-dark btn-sm w-100 fw-semibold py-2">
-                                Update Kondisi Fasilitas
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            @endif
-
-            <!-- Form 2: Form Tindak Lanjut Laporan (US12) -->
             <div class="card card-custom shadow-sm rounded-3 sticky-top" style="top: 20px;">
                 <div class="card-header card-header-custom py-3 rounded-top">
-                    <h5 class="mb-0 fw-semibold">Tindak Lanjut Laporan</h5>
+                    <h5 class="mb-0 fw-semibold">Tindak Lanjut Petugas</h5>
                 </div>
                 <div class="card-body p-4">
 
@@ -347,3 +234,4 @@
     });
 </script>
 @endsection
+
