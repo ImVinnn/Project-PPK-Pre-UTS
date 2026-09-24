@@ -55,7 +55,7 @@ Route::middleware(['auth', 'active'])->group(function (): void {
             Route::get('/reports', [OfficerReportController::class, 'index'])->name('reports.index');
             Route::get('/reports/{report}', [OfficerReportController::class, 'show'])->name('reports.show');
             Route::patch('/reports/{report}/status', [OfficerReportController::class, 'updateStatus'])->name('reports.status.update');
-
+            Route::patch('/reports/{report}/facility', [OfficerReportController::class, 'updateFacilityCondition'])->name('reports.facility.update');
             Route::get('/reservations', [OfficerReservationController::class, 'index'])->name('reservations.index');
             Route::get('/reservations/{reservation}', [OfficerReservationController::class, 'show'])->name('reservations.show');
             Route::patch('/reservations/{reservation}/approve', [OfficerReservationController::class, 'approve'])->name('reservations.approve');
