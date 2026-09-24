@@ -24,7 +24,7 @@ class AuthController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
 
-        return redirect()->to($this->dashboardRoute($request->user()));
+        return redirect()->to($request->user()->dashboardRoute());
     }
 
     public function showRegister(): View
@@ -56,14 +56,5 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return to_route('login');
-    }
-
-    private function dashboardRoute(User $user): string
-    {
-        return match ($user->role) {
-            Status::ROLE_ADMIN => route('admin.dashboard'),
-            Status::ROLE_OFFICER => route('officer.dashboard'),
-            default => route('dashboard'),
-        };
     }
 }
