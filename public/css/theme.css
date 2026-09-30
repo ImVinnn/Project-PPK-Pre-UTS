@@ -412,8 +412,13 @@ a:hover {
 
 @media (min-width: 992px) {
     .fotel-bento-grid {
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(6, 1fr);
     }
+}
+
+.fotel-bento-cell.is-active {
+    background-color: var(--c-bg-subtle);
+    border-bottom: 3px solid var(--c-gold);
 }
 
 .fotel-bento-cell {
@@ -480,50 +485,16 @@ a:hover {
 }
 
 /* ==========================================================================
-   Dark Horizontal Quick-Filter Strip (Fotel Strip)
+   Horizontal Blue Accent Line (Fotel Blue Separator)
    ========================================================================== */
+.fotel-blue-line,
 .fotel-dark-strip {
-    background-color: var(--c-dark);
-    color: #FFFFFF;
-    border-top: 1px solid #2A303C;
-    border-bottom: 1px solid #2A303C;
-    padding: 0.85rem 0;
-}
-
-.fotel-strip-list {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2.5rem;
-    overflow-x: auto;
-    padding: 0 1rem;
+    background-color: #1E3A5F;
+    height: 4px;
+    width: 100%;
+    border: none;
+    padding: 0;
     margin: 0;
-    list-style: none;
-}
-
-.fotel-strip-item a {
-    color: var(--c-dark-muted);
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.4rem 0.6rem;
-    border-radius: 4px;
-    white-space: nowrap;
-    transition: color var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out);
-}
-
-.fotel-strip-item a:hover,
-.fotel-strip-item a.active-strip {
-    color: #FFFFFF;
-    background-color: rgba(255, 255, 255, 0.08);
-}
-
-.fotel-strip-item a.active-strip {
-    color: var(--c-gold);
 }
 
 /* ==========================================================================

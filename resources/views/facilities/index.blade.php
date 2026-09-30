@@ -66,11 +66,27 @@
     </div>
 </section>
 
-{{-- 2. Bento Category Grid (5 Tipe Fasilitas - Gambar 3) --}}
+{{-- 2. Bento Category Grid (6 Kategori Fasilitas) --}}
 <section class="border-bottom">
     <div class="fotel-bento-grid">
+        {{-- Semua Kategori --}}
+        <a href="{{ route('facilities.index') }}" class="fotel-bento-cell fotel-reveal fotel-stagger-1 {{ !request('tipe') ? 'bg-light is-active' : '' }}">
+            <div class="fotel-bento-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#141820" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="7" height="7" x="3" y="3" rx="1.5"></rect>
+                    <rect width="7" height="7" x="14" y="3" rx="1.5"></rect>
+                    <rect width="7" height="7" x="14" y="14" rx="1.5"></rect>
+                    <rect width="7" height="7" x="3" y="14" rx="1.5"></rect>
+                </svg>
+            </div>
+            <div>
+                <div class="fotel-bento-label">Semua Kategori</div>
+                <div class="fotel-bento-sub">Seluruh Fasilitas</div>
+            </div>
+        </a>
+
         {{-- Ruang Kelas --}}
-        <a href="{{ route('facilities.index', ['tipe' => 'ruang_kelas']) }}" class="fotel-bento-cell fotel-reveal fotel-stagger-1 {{ request('tipe') === 'ruang_kelas' ? 'bg-light' : '' }}">
+        <a href="{{ route('facilities.index', ['tipe' => 'ruang_kelas']) }}" class="fotel-bento-cell fotel-reveal fotel-stagger-2 {{ request('tipe') === 'ruang_kelas' ? 'bg-light is-active' : '' }}">
             <div class="fotel-bento-icon">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#141820" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
@@ -85,7 +101,7 @@
         </a>
 
         {{-- Laboratorium --}}
-        <a href="{{ route('facilities.index', ['tipe' => 'laboratorium']) }}" class="fotel-bento-cell fotel-reveal fotel-stagger-2 {{ request('tipe') === 'laboratorium' ? 'bg-light' : '' }}">
+        <a href="{{ route('facilities.index', ['tipe' => 'laboratorium']) }}" class="fotel-bento-cell fotel-reveal fotel-stagger-3 {{ request('tipe') === 'laboratorium' ? 'bg-light is-active' : '' }}">
             <div class="fotel-bento-icon">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#141820" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                     <rect width="20" height="14" x="2" y="3" rx="2"></rect>
@@ -100,7 +116,7 @@
         </a>
 
         {{-- Aula & Auditorium --}}
-        <a href="{{ route('facilities.index', ['tipe' => 'aula']) }}" class="fotel-bento-cell fotel-reveal fotel-stagger-3 {{ request('tipe') === 'aula' ? 'bg-light' : '' }}">
+        <a href="{{ route('facilities.index', ['tipe' => 'aula']) }}" class="fotel-bento-cell fotel-reveal fotel-stagger-4 {{ request('tipe') === 'aula' ? 'bg-light is-active' : '' }}">
             <div class="fotel-bento-icon">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#141820" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                     <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -114,7 +130,7 @@
         </a>
 
         {{-- Peralatan Kampus --}}
-        <a href="{{ route('facilities.index', ['tipe' => 'alat']) }}" class="fotel-bento-cell fotel-reveal fotel-stagger-4 {{ request('tipe') === 'alat' ? 'bg-light' : '' }}">
+        <a href="{{ route('facilities.index', ['tipe' => 'alat']) }}" class="fotel-bento-cell fotel-reveal fotel-stagger-5 {{ request('tipe') === 'alat' ? 'bg-light is-active' : '' }}">
             <div class="fotel-bento-icon">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#141820" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                     <rect width="18" height="12" x="3" y="6" rx="2"></rect>
@@ -129,7 +145,7 @@
         </a>
 
         {{-- Lapangan Olahraga --}}
-        <a href="{{ route('facilities.index', ['tipe' => 'lapangan']) }}" class="fotel-bento-cell fotel-reveal fotel-stagger-5 {{ request('tipe') === 'lapangan' ? 'bg-light' : '' }}">
+        <a href="{{ route('facilities.index', ['tipe' => 'lapangan']) }}" class="fotel-bento-cell fotel-reveal fotel-stagger-6 {{ request('tipe') === 'lapangan' ? 'bg-light is-active' : '' }}">
             <div class="fotel-bento-icon">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#141820" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
@@ -145,43 +161,8 @@
     </div>
 </section>
 
-{{-- 3. Dark Horizontal Quick-Filter Strip (Gambar 2) --}}
-<div class="fotel-dark-strip">
-    <div class="container-fluid px-4">
-        <ul class="fotel-strip-list">
-            <li class="fotel-strip-item">
-                <a href="{{ route('facilities.index') }}" class="{{ !request('tipe') ? 'active-strip' : '' }}">
-                    <span>Semua Kategori</span>
-                </a>
-            </li>
-            <li class="fotel-strip-item">
-                <a href="{{ route('facilities.index', ['tipe' => 'ruang_kelas']) }}" class="{{ request('tipe') === 'ruang_kelas' ? 'active-strip' : '' }}">
-                    <span>Ruang Kelas</span>
-                </a>
-            </li>
-            <li class="fotel-strip-item">
-                <a href="{{ route('facilities.index', ['tipe' => 'laboratorium']) }}" class="{{ request('tipe') === 'laboratorium' ? 'active-strip' : '' }}">
-                    <span>Laboratorium</span>
-                </a>
-            </li>
-            <li class="fotel-strip-item">
-                <a href="{{ route('facilities.index', ['tipe' => 'aula']) }}" class="{{ request('tipe') === 'aula' ? 'active-strip' : '' }}">
-                    <span>Aula</span>
-                </a>
-            </li>
-            <li class="fotel-strip-item">
-                <a href="{{ route('facilities.index', ['tipe' => 'alat']) }}" class="{{ request('tipe') === 'alat' ? 'active-strip' : '' }}">
-                    <span>Peralatan</span>
-                </a>
-            </li>
-            <li class="fotel-strip-item">
-                <a href="{{ route('facilities.index', ['tipe' => 'lapangan']) }}" class="{{ request('tipe') === 'lapangan' ? 'active-strip' : '' }}">
-                    <span>Lapangan</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-</div>
+{{-- 3. Horizontal Blue Accent Line --}}
+<div class="fotel-blue-line"></div>
 
 {{-- 4. Search Form & Catalog Listing Grid (Fotel Editorial Inset Container) --}}
 <section class="fotel-container py-5" id="daftar-fasilitas">
