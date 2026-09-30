@@ -19,7 +19,7 @@
 <body>
     {{-- Header Bersih Bergaya Fotel --}}
     <header class="fotel-header">
-        <div class="container-fluid px-4 py-3">
+        <div class="{{ request()->routeIs('facilities.index') ? 'container-fluid px-4 px-lg-5' : 'fotel-container' }} py-3">
             <div class="d-flex align-items-center justify-content-between">
                 {{-- Brand & Lokasi --}}
                 <div class="d-flex align-items-center gap-3">
@@ -180,7 +180,7 @@
 
     {{-- Footer Hitam Arang Bergaya Fotel --}}
     <footer class="fotel-footer">
-        <div class="container-fluid px-4 px-lg-5">
+        <div class="{{ request()->routeIs('facilities.index') ? 'container-fluid px-4 px-lg-5' : 'fotel-container' }}">
             <div class="row g-4">
                 <div class="col-lg-4">
                     <div class="d-flex align-items-center gap-2 mb-3">

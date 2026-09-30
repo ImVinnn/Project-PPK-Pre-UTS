@@ -3,7 +3,7 @@
 @section('title', 'Status Laporan Saya - Fasilitas Kampus')
 
 @section('content')
-<div class="container py-4">
+<div class="fotel-container py-5">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 pb-3 border-bottom gap-2">
         <div>
             <div class="small text-uppercase font-mono text-muted">Layanan Sivitas</div>

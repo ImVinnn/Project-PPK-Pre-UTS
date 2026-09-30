@@ -3,7 +3,7 @@
 @section('title', 'Dashboard Pengguna - Fasilitas Kampus')
 
 @section('content')
-<div class="container py-5">
+<div class="fotel-container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="bg-white border rounded p-4 p-md-5">

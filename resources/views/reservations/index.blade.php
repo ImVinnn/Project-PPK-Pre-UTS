@@ -4,15 +4,17 @@
 
 @section('content')
 {{-- Breadcrumbs Minimalis Ala Fotel --}}
-<nav class="container-fluid px-4 px-lg-5 py-3 border-bottom small">
-    <div class="d-flex align-items-center gap-2 text-muted">
-        <a href="{{ route('facilities.index') }}" class="text-muted text-decoration-none">Katalog Fasilitas</a>
-        <span>&bull;</span>
-        <span class="text-dark fw-semibold">Reservasi Saya</span>
+<nav class="border-bottom small py-3">
+    <div class="fotel-container">
+        <div class="d-flex align-items-center gap-2 text-muted">
+            <a href="{{ route('facilities.index') }}" class="text-muted text-decoration-none">Katalog Fasilitas</a>
+            <span>&bull;</span>
+            <span class="text-dark fw-semibold">Reservasi Saya</span>
+        </div>
     </div>
 </nav>
 
-<section class="container-fluid px-4 px-lg-5 py-5">
+<section class="fotel-container py-5">
     {{-- Header Judul & Tombol Tambah --}}
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 pb-3 border-bottom gap-3">
         <div>

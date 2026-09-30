@@ -3,7 +3,7 @@
 @section('title', 'Masuk - Fasilitas Kampus')
 
 @section('content')
-<div class="container py-5 my-md-4">
+<div class="fotel-container py-5 my-md-4">
     <div class="row justify-content-center">
         <div class="col-md-5 col-lg-4">
             <div class="p-4 p-md-5 bg-white border rounded">

@@ -15,17 +15,19 @@
 @endphp
 
 {{-- Breadcrumbs Minimalis Ala Fotel --}}
-<nav class="container-fluid px-4 px-lg-5 py-3 border-bottom small">
-    <div class="d-flex align-items-center gap-2 text-muted">
-        <a href="{{ route('facilities.index') }}" class="text-muted text-decoration-none">Katalog Fasilitas</a>
-        <span>&bull;</span>
-        <a href="{{ route('facilities.index', ['tipe' => $facility->type]) }}" class="text-muted text-decoration-none">{{ $typeLabel }}</a>
-        <span>&bull;</span>
-        <span class="text-dark fw-semibold">{{ $facility->name }}</span>
+<nav class="border-bottom small py-3">
+    <div class="fotel-container">
+        <div class="d-flex align-items-center gap-2 text-muted">
+            <a href="{{ route('facilities.index') }}" class="text-muted text-decoration-none">Katalog Fasilitas</a>
+            <span>&bull;</span>
+            <a href="{{ route('facilities.index', ['tipe' => $facility->type]) }}" class="text-muted text-decoration-none">{{ $typeLabel }}</a>
+            <span>&bull;</span>
+            <span class="text-dark fw-semibold">{{ $facility->name }}</span>
+        </div>
     </div>
 </nav>
 
-<section class="container-fluid px-4 px-lg-5 py-5">
+<section class="fotel-container py-5">
     {{-- Banner Peringatan Jika Fasilitas Dalam Perbaikan --}}
     @if($facility->status === \App\Support\Status::FACILITY_MAINTENANCE)
         <div class="alert alert-warning border mb-4 d-flex align-items-center gap-3" role="alert">
