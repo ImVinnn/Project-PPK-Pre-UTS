@@ -175,8 +175,8 @@
     </div>
 </div>
 
-{{-- 4. Search Form & Catalog Listing Grid (Gambar 2) --}}
-<section class="container-fluid px-4 px-lg-5 py-5" id="daftar-fasilitas">
+{{-- 4. Search Form & Catalog Listing Grid (Fotel Editorial Inset Container) --}}
+<section class="fotel-container py-5" id="daftar-fasilitas">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 pb-3 border-bottom gap-3">
         <div>
             <div class="small text-uppercase font-mono text-muted">Inventaris Kampus</div>

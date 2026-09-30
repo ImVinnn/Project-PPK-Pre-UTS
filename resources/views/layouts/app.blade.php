@@ -180,7 +180,7 @@
 
     {{-- Footer Hitam Arang Bergaya Fotel --}}
     <footer class="fotel-footer">
-        <div class="{{ request()->routeIs('facilities.index') ? 'container-fluid px-4 px-lg-5' : 'fotel-container' }}">
+        <div class="fotel-container">
             <div class="row g-4">
                 <div class="col-lg-4">
                     <div class="d-flex align-items-center gap-2 mb-3">
