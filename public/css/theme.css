@@ -931,4 +931,52 @@ a:hover {
     }
 }
 
+/* ==========================================================================
+   Staggered Scroll Reveals (The Discovery)
+   ========================================================================== */
+.fotel-reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 450ms var(--fotel-ease-out), transform 450ms var(--fotel-ease-out);
+    will-change: opacity, transform;
+}
+
+.fotel-reveal.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.fotel-stagger-1 {
+    transition-delay: 30ms;
+}
+
+.fotel-stagger-2 {
+    transition-delay: 60ms;
+}
+
+.fotel-stagger-3 {
+    transition-delay: 90ms;
+}
+
+.fotel-stagger-4 {
+    transition-delay: 120ms;
+}
+
+.fotel-stagger-5 {
+    transition-delay: 150ms;
+}
+
+.fotel-stagger-6 {
+    transition-delay: 180ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fotel-reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}
+
+
 

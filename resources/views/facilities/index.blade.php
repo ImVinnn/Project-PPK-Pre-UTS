@@ -62,7 +62,7 @@
 <section class="border-bottom">
     <div class="fotel-bento-grid">
         {{-- Ruang Kelas --}}
-        <a href="{{ route('facilities.index', ['tipe' => 'ruang_kelas']) }}" class="fotel-bento-cell {{ request('tipe') === 'ruang_kelas' ? 'bg-light' : '' }}">
+        <a href="{{ route('facilities.index', ['tipe' => 'ruang_kelas']) }}" class="fotel-bento-cell fotel-reveal fotel-stagger-1 {{ request('tipe') === 'ruang_kelas' ? 'bg-light' : '' }}">
             <div class="fotel-bento-icon">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#141820" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
@@ -77,7 +77,7 @@
         </a>
 
         {{-- Laboratorium --}}
-        <a href="{{ route('facilities.index', ['tipe' => 'laboratorium']) }}" class="fotel-bento-cell {{ request('tipe') === 'laboratorium' ? 'bg-light' : '' }}">
+        <a href="{{ route('facilities.index', ['tipe' => 'laboratorium']) }}" class="fotel-bento-cell fotel-reveal fotel-stagger-2 {{ request('tipe') === 'laboratorium' ? 'bg-light' : '' }}">
             <div class="fotel-bento-icon">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#141820" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                     <rect width="20" height="14" x="2" y="3" rx="2"></rect>
@@ -92,7 +92,7 @@
         </a>
 
         {{-- Aula & Auditorium --}}
-        <a href="{{ route('facilities.index', ['tipe' => 'aula']) }}" class="fotel-bento-cell {{ request('tipe') === 'aula' ? 'bg-light' : '' }}">
+        <a href="{{ route('facilities.index', ['tipe' => 'aula']) }}" class="fotel-bento-cell fotel-reveal fotel-stagger-3 {{ request('tipe') === 'aula' ? 'bg-light' : '' }}">
             <div class="fotel-bento-icon">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#141820" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                     <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -106,7 +106,7 @@
         </a>
 
         {{-- Peralatan Kampus --}}
-        <a href="{{ route('facilities.index', ['tipe' => 'alat']) }}" class="fotel-bento-cell {{ request('tipe') === 'alat' ? 'bg-light' : '' }}">
+        <a href="{{ route('facilities.index', ['tipe' => 'alat']) }}" class="fotel-bento-cell fotel-reveal fotel-stagger-4 {{ request('tipe') === 'alat' ? 'bg-light' : '' }}">
             <div class="fotel-bento-icon">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#141820" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                     <rect width="18" height="12" x="3" y="6" rx="2"></rect>
@@ -121,7 +121,7 @@
         </a>
 
         {{-- Lapangan Olahraga --}}
-        <a href="{{ route('facilities.index', ['tipe' => 'lapangan']) }}" class="fotel-bento-cell {{ request('tipe') === 'lapangan' ? 'bg-light' : '' }}">
+        <a href="{{ route('facilities.index', ['tipe' => 'lapangan']) }}" class="fotel-bento-cell fotel-reveal fotel-stagger-5 {{ request('tipe') === 'lapangan' ? 'bg-light' : '' }}">
             <div class="fotel-bento-icon">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#141820" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
@@ -226,7 +226,7 @@
     {{-- Product Grid 4 Kolom (Fotel Product Cards) --}}
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
         @forelse($facilities as $facility)
-            <div class="col">
+            <div class="col fotel-reveal fotel-stagger-{{ ($loop->index % 4) + 1 }}">
                 <div class="fotel-product-card">
                     {{-- Visual Image Box --}}
                     <div class="fotel-card-image-box">

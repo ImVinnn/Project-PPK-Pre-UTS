@@ -322,7 +322,7 @@
         {{-- 26 Slot Grid --}}
         <div class="fotel-slot-grid">
             @foreach($slots as $slot)
-                <div class="fotel-slot-card {{ $slot['is_available'] ? 'available' : 'occupied' }}">
+                <div class="fotel-slot-card fotel-reveal fotel-stagger-{{ ($slot['index'] % 6) + 1 }} {{ $slot['is_available'] ? 'available' : 'occupied' }}">
                     <div class="d-flex justify-content-between align-items-center">
                         <span class="fotel-slot-num font-mono">#{{ $slot['index'] }}</span>
                         @if($slot['is_available'])

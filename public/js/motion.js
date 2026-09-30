@@ -73,10 +73,48 @@
         });
     }
 
+    /**
+     * 2. The Discovery: Staggered Scroll Reveals
+     * Memunculkan elemen secara bertahap (cascading) saat masuk ke viewport.
+     */
+    function initScrollReveals() {
+        const revealElements = document.querySelectorAll('.fotel-reveal');
+        if (!revealElements.length) return;
+
+        if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+            revealElements.forEach(function (el) {
+                el.classList.add('is-revealed');
+            });
+            return;
+        }
+
+        const observer = new IntersectionObserver(function (entries, obs) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-revealed');
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, {
+            rootMargin: '0px 0px -40px 0px',
+            threshold: 0.08
+        });
+
+        revealElements.forEach(function (el) {
+            observer.observe(el);
+        });
+    }
+
     // Inisialisasi saat DOM siap
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initPageTransitions);
-    } else {
+    function init() {
         initPageTransitions();
+        initScrollReveals();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
     }
 })();
+
