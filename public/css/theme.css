@@ -1034,5 +1034,64 @@ a:hover {
     }
 }
 
+/* ==========================================================================
+   Skeleton Shimmer Placeholders (The Waiting State)
+   ========================================================================== */
+@keyframes fotelShimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.fotel-skeleton {
+    background: linear-gradient(90deg, #F0F2F5 25%, #FAFAFA 50%, #F0F2F5 75%);
+    background-size: 200% 100%;
+    animation: fotelShimmer 1.6s infinite ease-in-out;
+    border-radius: 3px;
+}
+
+.fotel-skeleton-card {
+    background: #FFFFFF;
+    border: 1px solid var(--c-border);
+    border-radius: 4px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.fotel-skeleton-img {
+    height: 200px;
+    margin-bottom: 1.25rem;
+}
+
+.fotel-skeleton-line {
+    height: 14px;
+    margin-bottom: 0.6rem;
+}
+
+.fotel-skeleton-line.short {
+    width: 35%;
+}
+
+.fotel-skeleton-line.medium {
+    width: 65%;
+}
+
+.fotel-skeleton-line.long {
+    width: 88%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fotel-skeleton {
+        animation: none !important;
+        background: #F0F2F5 !important;
+    }
+}
+
+
 
 

@@ -105,10 +105,50 @@
         });
     }
 
+    /**
+     * 4. The Waiting State: Skeleton Placeholders
+     * Menampilkan skeleton shimmer seketika saat filter dikirim agar UI tetap stabil tanpa layout shift.
+     */
+    function initCatalogSkeletons() {
+        const filterForm = document.getElementById('catalog-filter-form');
+        const skeletonBox = document.getElementById('catalog-skeleton');
+        const productsBox = document.getElementById('catalog-products');
+
+        if (!skeletonBox || !productsBox) return;
+
+        function showSkeletons() {
+            productsBox.style.display = 'none';
+            skeletonBox.style.display = 'flex';
+        }
+
+        if (filterForm) {
+            filterForm.addEventListener('submit', function () {
+                showSkeletons();
+            });
+        }
+
+        // Tangkap juga klik pada strip kategori atau sel bento untuk transisi mulus
+        document.querySelectorAll('.fotel-strip-item a, .fotel-bento-cell').forEach(function (link) {
+            link.addEventListener('click', function () {
+                const href = link.getAttribute('href');
+                if (href && !link.classList.contains('active-strip')) {
+                    showSkeletons();
+                }
+            });
+        });
+
+        // Pulihkan tampilan jika pengguna kembali via browser Back/Forward Cache
+        window.addEventListener('pageshow', function () {
+            skeletonBox.style.display = 'none';
+            productsBox.style.display = '';
+        });
+    }
+
     // Inisialisasi saat DOM siap
     function init() {
         initPageTransitions();
         initScrollReveals();
+        initCatalogSkeletons();
     }
 
     if (document.readyState === 'loading') {

@@ -188,7 +188,7 @@
     </div>
 
     {{-- Filter Search Form --}}
-    <form method="GET" action="{{ route('facilities.index') }}" class="row g-2 align-items-end mb-5 p-3 rounded bg-light border">
+    <form method="GET" action="{{ route('facilities.index') }}" id="catalog-filter-form" class="row g-2 align-items-end mb-5 p-3 rounded bg-light border">
         <div class="col-md-3">
             <label for="tipe" class="form-label small fw-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.05em;">Tipe Fasilitas</label>
             <select class="form-select form-select-sm" id="tipe" name="tipe">
@@ -223,8 +223,23 @@
         </div>
     </form>
 
+    {{-- Skeleton Placeholder State (The Waiting State) --}}
+    <div id="catalog-skeleton" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4" style="display: none;" aria-hidden="true">
+        @for($i = 0; $i < 8; $i++)
+            <div class="col">
+                <div class="fotel-skeleton-card">
+                    <div class="fotel-skeleton fotel-skeleton-img"></div>
+                    <div class="fotel-skeleton fotel-skeleton-line short"></div>
+                    <div class="fotel-skeleton fotel-skeleton-line medium mb-3"></div>
+                    <div class="fotel-skeleton fotel-skeleton-line long"></div>
+                    <div class="fotel-skeleton fotel-skeleton-line short mt-auto"></div>
+                </div>
+            </div>
+        @endfor
+    </div>
+
     {{-- Product Grid 4 Kolom (Fotel Product Cards) --}}
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+    <div id="catalog-products" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
         @forelse($facilities as $facility)
             <div class="col fotel-reveal fotel-stagger-{{ ($loop->index % 4) + 1 }}">
                 <div class="fotel-product-card">
