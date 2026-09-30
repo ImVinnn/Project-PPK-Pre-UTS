@@ -42,19 +42,19 @@
                     </div>
                     <div class="row g-0 text-center align-items-center">
                         <div class="col-4 stat-divider px-2">
-                            <div class="stat-number font-mono text-white">
+                            <div class="stat-number font-mono text-white" data-counter="{{ $stats['total'] ?? $facilities->total() }}">
                                 {{ $stats['total'] ?? $facilities->total() }}
                             </div>
                             <div class="stat-label">Total Fasilitas</div>
                         </div>
                         <div class="col-4 stat-divider px-2">
-                            <div class="stat-number font-mono" style="color: #4ADE80;">
+                            <div class="stat-number font-mono" style="color: #4ADE80;" data-counter="{{ $stats['active'] ?? 0 }}">
                                 {{ $stats['active'] ?? 0 }}
                             </div>
                             <div class="stat-label">Siap Digunakan</div>
                         </div>
                         <div class="col-4 px-2">
-                            <div class="stat-number font-mono" style="color: #FBBF24;">
+                            <div class="stat-number font-mono" style="color: #FBBF24;" data-counter="{{ $stats['maintenance'] ?? 0 }}">
                                 {{ $stats['maintenance'] ?? 0 }}
                             </div>
                             <div class="stat-label">Dalam Perbaikan</div>

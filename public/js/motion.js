@@ -144,11 +144,62 @@
         });
     }
 
+    /**
+     * 5. The Tactile Metrics: Number Counter Animation
+     * Menganimasikan angka dari 0 menuju target saat pengguna mendarat (landed) di halaman.
+     */
+    function initStatCounters() {
+        if (prefersReducedMotion) return;
+
+        const counterElements = document.querySelectorAll('[data-counter]');
+        if (!counterElements.length) return;
+
+        const duration = 1000; // ms
+
+        counterElements.forEach(function (el) {
+            const target = parseInt(el.getAttribute('data-counter'), 10);
+            if (isNaN(target)) return;
+
+            // Jika target 0, tetap tampilkan 0
+            if (target === 0) {
+                el.textContent = '0';
+                return;
+            }
+
+            el.textContent = '0';
+            let startTime = null;
+
+            function updateCounter(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                // Quartic ease-out curve untuk perlambatan yang halus dan presisi
+                const easeOut = 1 - Math.pow(1 - progress, 4);
+                const current = Math.round(easeOut * target);
+
+                el.textContent = current;
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    el.textContent = target;
+                }
+            }
+
+            // Jalankan setelah sedikit jeda (120ms) agar transisi halaman landing selesai dahulu
+            setTimeout(function () {
+                requestAnimationFrame(updateCounter);
+            }, 120);
+        });
+    }
+
     // Inisialisasi saat DOM siap
     function init() {
         initPageTransitions();
         initScrollReveals();
         initCatalogSkeletons();
+        initStatCounters();
     }
 
     if (document.readyState === 'loading') {
