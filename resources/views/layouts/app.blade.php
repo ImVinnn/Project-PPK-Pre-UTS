@@ -192,13 +192,9 @@
                         </div>
                         <span class="fs-5 fw-bold text-white tracking-tight">Fasilitas Kampus</span>
                     </div>
-                    <p class="small mb-4" style="max-width: 38ch; line-height: 1.7; color: #CBD5E1;">
+                    <p class="small mb-0" style="max-width: 38ch; line-height: 1.7; color: #CBD5E1;">
                         Portal terintegrasi pengelolaan ruang kelas, laboratorium riset, aula serbaguna, dan peralatan kampus dengan sistem alokasi 26 slot waktu harian.
                     </p>
-                    <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);">
-                        <span class="d-inline-block rounded-circle" style="width: 8px; height: 8px; background: #27AE60;"></span>
-                        <span class="small text-white font-mono">Sistem Siap Operasional</span>
-                    </div>
                 </div>
 
                 <div class="col-6 col-lg-2">
