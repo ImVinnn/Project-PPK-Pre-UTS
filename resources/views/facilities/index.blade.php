@@ -36,20 +36,28 @@
 
             {{-- Stat Box Kanan --}}
             <div class="col-lg-5 d-none d-lg-block">
-                <div class="p-4 rounded" style="background: rgba(20, 24, 32, 0.75); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(8px);">
-                    <div class="small text-uppercase font-mono text-muted mb-3" style="letter-spacing: 0.1em;">Ringkasan Inventaris Kampus</div>
-                    <div class="row g-3">
-                        <div class="col-4">
-                            <div class="font-mono fs-2 fw-bold text-white">{{ $stats['total'] ?? $facilities->total() }}</div>
-                            <div class="small text-muted">Total Fasilitas</div>
+                <div class="fotel-hero-stat-box">
+                    <div class="stat-title font-mono">
+                        Ringkasan Inventaris Kampus
+                    </div>
+                    <div class="row g-0 text-center align-items-center">
+                        <div class="col-4 stat-divider px-2">
+                            <div class="stat-number font-mono text-white">
+                                {{ $stats['total'] ?? $facilities->total() }}
+                            </div>
+                            <div class="stat-label">Total Fasilitas</div>
                         </div>
-                        <div class="col-4">
-                            <div class="font-mono fs-2 fw-bold text-success">{{ $stats['active'] ?? 0 }}</div>
-                            <div class="small text-muted">Siap Digunakan</div>
+                        <div class="col-4 stat-divider px-2">
+                            <div class="stat-number font-mono" style="color: #4ADE80;">
+                                {{ $stats['active'] ?? 0 }}
+                            </div>
+                            <div class="stat-label">Siap Digunakan</div>
                         </div>
-                        <div class="col-4">
-                            <div class="font-mono fs-2 fw-bold text-warning">{{ $stats['maintenance'] ?? 0 }}</div>
-                            <div class="small text-muted">Dalam Perbaikan</div>
+                        <div class="col-4 px-2">
+                            <div class="stat-number font-mono" style="color: #FBBF24;">
+                                {{ $stats['maintenance'] ?? 0 }}
+                            </div>
+                            <div class="stat-label">Dalam Perbaikan</div>
                         </div>
                     </div>
                 </div>

@@ -192,10 +192,10 @@
                         </div>
                         <span class="fs-5 fw-bold text-white tracking-tight">Fasilitas Kampus</span>
                     </div>
-                    <p class="small text-muted mb-4" style="max-width: 38ch; line-height: 1.7;">
+                    <p class="small mb-4" style="max-width: 38ch; line-height: 1.7; color: #CBD5E1;">
                         Portal terintegrasi pengelolaan ruang kelas, laboratorium riset, aula serbaguna, dan peralatan kampus dengan sistem alokasi 26 slot waktu harian.
                     </p>
-                    <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);">
+                    <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);">
                         <span class="d-inline-block rounded-circle" style="width: 8px; height: 8px; background: #27AE60;"></span>
                         <span class="small text-white font-mono">Sistem Siap Operasional</span>
                     </div>
@@ -220,32 +220,32 @@
 
                 <div class="col-6 col-lg-3">
                     <div class="fotel-footer-title">Jam Operasional</div>
-                    <ul class="list-unstyled small mb-0 d-flex flex-column gap-2 text-muted">
-                        <li>Senin - Jumat: <strong class="text-white font-mono">07.00 - 20.00 WIB</strong></li>
-                        <li>Sabtu - Minggu: <strong class="text-white font-mono">Dengan Dispensasi</strong></li>
-                        <li>Total Alokasi: <span class="text-white">26 Slot per Hari (@ 30 mnt)</span></li>
-                        <li>Batas Batal Mandiri: <span class="text-warning">Maks. 2 Jam Sebelum Mulai</span></li>
+                    <ul class="fotel-footer-list small d-flex flex-column gap-2">
+                        <li style="color: #94A3B8;">Senin - Jumat: <strong class="text-white font-mono ms-1">07.00 - 20.00 WIB</strong></li>
+                        <li style="color: #94A3B8;">Sabtu - Minggu: <strong class="text-white font-mono ms-1">Dengan Dispensasi</strong></li>
+                        <li style="color: #94A3B8;">Total Alokasi: <span class="text-white ms-1">26 Slot per Hari (@ 30 mnt)</span></li>
+                        <li style="color: #94A3B8;">Batas Batal Mandiri: <span class="text-warning ms-1">Maks. 2 Jam Sebelum Mulai</span></li>
                     </ul>
                 </div>
 
                 <div class="col-lg-3">
                     <div class="fotel-footer-title">Layanan & Kontak</div>
-                    <p class="small text-muted mb-2">
+                    <p class="small mb-2" style="color: #CBD5E1; line-height: 1.7;">
                         Gedung Rektorat & Layanan Akademik Kampus Terpadu Lt. 1<br>
-                        Telp: (021) 7888-KAMPUS<br>
-                        Email: fasilitas@kampus.ac.id
+                        Telp: <span class="text-white">(021) 7888-KAMPUS</span><br>
+                        Email: <span class="text-white">fasilitas@kampus.ac.id</span>
                     </p>
-                    <div class="small text-muted font-mono mt-3">
+                    <div class="small font-mono mt-3" style="color: #94A3B8;">
                         *Data agenda bersifat rahasia sivitas
                     </div>
                 </div>
             </div>
 
             <div class="fotel-footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-                <div>&copy; {{ date('Y') }} Sistem Peminjaman Fasilitas Kampus. Hak cipta dilindungi.</div>
+                <div style="color: #94A3B8;">&copy; {{ date('Y') }} Sistem Peminjaman Fasilitas Kampus. Hak cipta dilindungi.</div>
                 <div class="d-flex gap-3">
                     <a href="{{ route('facilities.index') }}">Kebijakan Privasi</a>
-                    <span>&middot;</span>
+                    <span style="color: #475569;">&middot;</span>
                     <a href="{{ route('facilities.index') }}">Ketentuan Layanan</a>
                 </div>
             </div>

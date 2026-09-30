@@ -355,6 +355,44 @@ a:hover {
     margin-bottom: 2rem;
 }
 
+/* Stat Box Ringkasan Inventaris */
+.fotel-hero-stat-box {
+    background: rgba(20, 24, 32, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 6px;
+    padding: 1.5rem;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.fotel-hero-stat-box .stat-title {
+    color: #94A3B8;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+}
+
+.fotel-hero-stat-box .stat-number {
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+}
+
+.fotel-hero-stat-box .stat-label {
+    color: #CBD5E1;
+    font-size: 0.78rem;
+    font-weight: 500;
+    line-height: 1.25;
+}
+
+.fotel-hero-stat-box .stat-divider {
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+}
+
 /* ==========================================================================
    Bento Category Grid (Fotel 4x2 White Table Grid)
    ========================================================================== */
@@ -878,18 +916,27 @@ a:hover {
    ========================================================================== */
 .fotel-footer {
     background-color: var(--c-dark);
-    color: #FFFFFF;
+    color: #CBD5E1;
     padding: 4rem 0 2rem;
     margin-top: 5rem;
     border-top: 1px solid #232A36;
 }
 
+.fotel-footer p {
+    color: #94A3B8;
+}
+
 .fotel-footer a {
-    color: var(--c-dark-muted);
+    color: #CBD5E1;
+    transition: color var(--duration-fast) var(--fotel-ease-out);
 }
 
 .fotel-footer a:hover {
     color: #FFFFFF;
+}
+
+.fotel-footer .text-muted {
+    color: #94A3B8 !important;
 }
 
 .fotel-footer-title {
@@ -901,12 +948,31 @@ a:hover {
     margin-bottom: 1.25rem;
 }
 
+.fotel-footer-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.fotel-footer-list li {
+    color: #94A3B8;
+    line-height: 1.6;
+}
+
 .fotel-footer-bottom {
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     margin-top: 3rem;
     padding-top: 1.5rem;
     font-size: 0.78rem;
-    color: var(--c-dark-muted);
+    color: #94A3B8;
+}
+
+.fotel-footer-bottom a {
+    color: #94A3B8;
+}
+
+.fotel-footer-bottom a:hover {
+    color: #FFFFFF;
 }
 
 /* ==========================================================================
