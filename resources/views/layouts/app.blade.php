@@ -19,7 +19,7 @@
 <body>
     {{-- Header Bersih Bergaya Fotel --}}
     <header class="fotel-header">
-        <div class="{{ request()->routeIs('facilities.index') ? 'container-fluid px-4 px-lg-5' : 'fotel-container' }} py-3">
+        <div class="fotel-container py-3">
             <div class="d-flex align-items-center justify-content-between">
                 {{-- Brand & Lokasi --}}
                 <div class="d-flex align-items-center gap-3">
