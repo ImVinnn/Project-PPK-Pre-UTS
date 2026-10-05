@@ -280,6 +280,8 @@ class FacilityManagementTest extends TestCase
 
     public function test_deactivate_warns_about_future_approved_reservations_and_keeps_them(): void
     {
+        // Jangan bergantung pada APP_LOCALE di .env masing-masing anggota.
+        Carbon::setLocale('id');
         $facility = $this->makeFacility();
         $applicant = User::factory()->create(['name' => 'Sinta Pemohon']);
 
@@ -292,7 +294,7 @@ class FacilityManagementTest extends TestCase
             ->assertOk()
             ->assertSee('1 reservasi disetujui di masa depan')
             ->assertSee('Sinta Pemohon')
-            ->assertSee('21 Oct 2026, 09:00')
+            ->assertSee('21 Okt 2026, 09:00')
             ->assertDontSee(route('officer.reservations.show', $future))
             ->assertDontSee('Lalu Pemohon')
             ->assertDontSee('Tunggu Pemohon');

@@ -120,7 +120,7 @@
                                 @endphp
                                 <tr>
                                     <td class="ps-4">
-                                        <span class="small">{{ $reservation->created_at->format('d M Y') }}</span>
+                                        <span class="small">{{ $reservation->created_at->translatedFormat('d M Y') }}</span>
                                         <br>
                                         <small class="text-muted">{{ $reservation->created_at->format('H:i') }} WIB</small>
                                     </td>
@@ -131,7 +131,7 @@
                                     </td>
                                     <td>{{ $reservation->facility->name ?? '-' }}</td>
                                     <td class="small">
-                                        {{ $reservation->start_time->format('d M Y, H:i') }}
+                                        {{ $reservation->start_time->translatedFormat('d M Y, H:i') }}
                                         &ndash;
                                         {{ $reservation->end_time->format('H:i') }} WIB
                                     </td>

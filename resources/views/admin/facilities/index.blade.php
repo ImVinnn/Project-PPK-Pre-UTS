@@ -161,7 +161,7 @@
                                 <ul class="list-group list-group-flush small">
                                     @foreach ($upcoming as $reservation)
                                         <li class="list-group-item px-0">
-                                            <span class="font-mono">{{ $reservation->start_time->format('d M Y, H:i') }}&ndash;{{ $reservation->end_time->format('H:i') }} WIB</span>
+                                            <span class="font-mono">{{ $reservation->start_time->translatedFormat('d M Y, H:i') }}&ndash;{{ $reservation->end_time->format('H:i') }} WIB</span>
                                             <br>
                                             <span class="text-secondary">{{ $reservation->user->name ?? '-' }}</span>
                                         </li>
