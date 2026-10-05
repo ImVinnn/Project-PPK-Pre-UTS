@@ -83,6 +83,9 @@
                             <a class="fotel-nav-link {{ request()->routeIs('admin.facilities.*') ? 'active-page' : '' }}" href="{{ route('admin.facilities.index') }}">
                                 Fasilitas
                             </a>
+                            <a class="fotel-nav-link {{ request()->routeIs('admin.recaps.*') ? 'active-page' : '' }}" href="{{ route('admin.recaps.index') }}">
+                                Rekap
+                            </a>
                         @endif
 
                         @if (auth()->user()->hasRole(\App\Support\Status::ROLE_USER))
@@ -148,6 +151,7 @@
                             <a class="fotel-nav-link px-0" href="{{ route('admin.faculties.index') }}">Fakultas</a>
                             <a class="fotel-nav-link px-0" href="{{ route('admin.buildings.index') }}">Gedung</a>
                             <a class="fotel-nav-link px-0" href="{{ route('admin.facilities.index') }}">Fasilitas</a>
+                            <a class="fotel-nav-link px-0" href="{{ route('admin.recaps.index') }}">Rekap</a>
                         @endif
                         @if (auth()->user()->hasRole(\App\Support\Status::ROLE_USER))
                             <a class="fotel-nav-link px-0" href="{{ route('facilities.index') }}">Katalog Fasilitas</a>

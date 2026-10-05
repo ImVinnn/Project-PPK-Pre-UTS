@@ -972,6 +972,20 @@ a:hover {
     }
 }
 
+/* Navbar selebar layar; konten halaman tetap memakai max-width di atas */
+.fotel-header .fotel-container {
+    max-width: none;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+    .fotel-header .fotel-container {
+        padding-left: 1.75rem;
+        padding-right: 1.75rem;
+    }
+}
+
 /* ==========================================================================
    Motion Language & Page Transitions (Fotel Motion Design)
    ========================================================================== */
