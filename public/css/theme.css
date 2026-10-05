@@ -60,6 +60,15 @@
     --fotel-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
     --fotel-duration-page: 240ms;
     --fotel-duration-hover: 180ms;
+
+    /* Tinggi navbar terukur: 72px, kecuali 992–1199px saat menu terlipat dua baris */
+    --fotel-header-height: 72px;
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    :root {
+        --fotel-header-height: 94px;
+    }
 }
 
 /* ==========================================================================
@@ -96,7 +105,15 @@ a:hover {
     border-bottom: 1px solid var(--c-border);
     position: sticky;
     top: 0;
-    z-index: 1020;
+    /* Setara .fixed-top Bootstrap: di atas .sticky-top (1020), di bawah backdrop modal (1050) */
+    z-index: 1030;
+}
+
+/* Panel menempel di konten berhenti di bawah navbar. !important dipakai
+   untuk mengalahkan inline style="top: 20px" di view officer/reports/show
+   dan officer/reservations/show; hapus !important kalau inline itu dibuang. */
+main .sticky-top {
+    top: calc(var(--fotel-header-height) + 1rem) !important;
 }
 
 .fotel-brand {
