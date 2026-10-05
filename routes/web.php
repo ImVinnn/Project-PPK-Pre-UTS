@@ -69,7 +69,7 @@ Route::middleware(['auth', 'active'])->group(function (): void {
         ->name('admin.')
         ->middleware('role:'.Status::ROLE_ADMIN)
         ->group(function (): void {
-            Route::view('/', 'dashboard')->name('dashboard');
+            Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
             Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index');
             Route::get('/accounts/create', [AccountController::class, 'create'])->name('accounts.create');
             Route::post('/accounts', [AccountController::class, 'store'])->name('accounts.store');
