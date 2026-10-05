@@ -4,6 +4,8 @@ use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\BuildingController;
 use App\Http\Controllers\Admin\FacilityController as AdminFacilityController;
 use App\Http\Controllers\Admin\FacultyController;
+use App\Http\Controllers\Admin\RecapController;
+use App\Services\RecapService;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\ReservationController;
@@ -83,5 +85,10 @@ Route::middleware(['auth', 'active'])->group(function (): void {
             Route::put('/facilities/{facility}', [AdminFacilityController::class, 'update'])->name('facilities.update');
             Route::patch('/facilities/{facility}/deactivate', [AdminFacilityController::class, 'deactivate'])
                 ->name('facilities.deactivate');
+
+            Route::get('/recaps', [RecapController::class, 'index'])->name('recaps.index');
+            Route::get('/recaps/export/{type}', [RecapController::class, 'export'])
+                ->whereIn('type', array_keys(RecapService::COLUMNS))
+                ->name('recaps.export');
         });
 });
