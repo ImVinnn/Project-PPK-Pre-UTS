@@ -92,17 +92,16 @@
                         <td><span class="badge {{ $statusBadge }}">{{ $statusLabel }}</span></td>
                         <td class="text-end px-3">
                             <a href="{{ route('admin.facilities.edit', $facility) }}" class="btn btn-outline-primary btn-sm">Edit</a>
-                            @if ($facility->status !== \App\Support\Status::FACILITY_INACTIVE)
-                                <form
-                                    method="POST"
-                                    action="{{ route('admin.facilities.deactivate', $facility) }}"
-                                    class="d-inline"
-                                    onsubmit="return confirm('Nonaktifkan fasilitas ini? Fasilitas nonaktif tidak dapat menerima pengajuan/approve reservasi baru, tetapi riwayat tetap tersimpan.')"
-                                >
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="btn btn-outline-danger btn-sm">Nonaktifkan</button>
-                                </form>
+                            @if ($facility->status === \App\Support\Status::FACILITY_INACTIVE)
+                                <button type="button" class="btn btn-outline-success btn-sm"
+                                        data-bs-toggle="modal" data-bs-target="#activate-modal-{{ $facility->id }}">
+                                    Aktifkan kembali
+                                </button>
+                            @else
+                                <button type="button" class="btn btn-outline-danger btn-sm"
+                                        data-bs-toggle="modal" data-bs-target="#deactivate-modal-{{ $facility->id }}">
+                                    Nonaktifkan
+                                </button>
                             @endif
                         </td>
                     </tr>
@@ -116,5 +115,68 @@
     </div>
 
     <div class="mt-4">{{ $facilities->links() }}</div>
+
+    @foreach ($facilities as $facility)
+        @if ($facility->status === \App\Support\Status::FACILITY_INACTIVE)
+            <div class="modal fade" id="activate-modal-{{ $facility->id }}" tabindex="-1" aria-labelledby="activate-title-{{ $facility->id }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <form method="POST" action="{{ route('admin.facilities.activate', $facility) }}" class="modal-content">
+                        @csrf
+                        @method('PATCH')
+                        <div class="modal-header">
+                            <h2 class="modal-title fs-5" id="activate-title-{{ $facility->id }}">Aktifkan kembali {{ $facility->name }}?</h2>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="mb-0">Fasilitas akan berstatus <strong>Aktif</strong> dan kembali dapat diajukan serta disetujui reservasinya.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-success">Aktifkan kembali</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        @else
+            @php $upcoming = $upcomingApproved->get($facility->id, collect()); @endphp
+            <div class="modal fade" id="deactivate-modal-{{ $facility->id }}" tabindex="-1" aria-labelledby="deactivate-title-{{ $facility->id }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <form method="POST" action="{{ route('admin.facilities.deactivate', $facility) }}" class="modal-content">
+                        @csrf
+                        @method('PATCH')
+                        <div class="modal-header">
+                            <h2 class="modal-title fs-5" id="deactivate-title-{{ $facility->id }}">Nonaktifkan {{ $facility->name }}?</h2>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Fasilitas nonaktif tidak dapat menerima pengajuan atau persetujuan reservasi baru. Riwayat tetap tersimpan.</p>
+
+                            @if ($upcoming->isEmpty())
+                                <p class="mb-0 text-secondary">Tidak ada reservasi disetujui di masa depan untuk fasilitas ini.</p>
+                            @else
+                                <div class="alert alert-warning mb-2" role="alert">
+                                    <strong>{{ $upcoming->count() }} reservasi disetujui di masa depan</strong>
+                                    tidak dibatalkan otomatis. Petugas perlu meninjau dan membatalkannya secara manual.
+                                </div>
+                                <ul class="list-group list-group-flush small">
+                                    @foreach ($upcoming as $reservation)
+                                        <li class="list-group-item px-0">
+                                            <span class="font-mono">{{ $reservation->start_time->translatedFormat('d M Y, H:i') }}&ndash;{{ $reservation->end_time->format('H:i') }} WIB</span>
+                                            <br>
+                                            <span class="text-secondary">{{ $reservation->user->name ?? '-' }}</span>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-danger">Nonaktifkan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        @endif
+    @endforeach
 </div>
 @endsection

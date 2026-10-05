@@ -19,6 +19,7 @@
                         'submitLabel' => 'Perbarui Fasilitas',
                     ])
                 </form>
+                <script src="{{ asset('js/facility-form.js') }}"></script>
             </div>
         </div>
     </div>

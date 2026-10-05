@@ -1,5 +1,5 @@
 /**
- * facility-filter.js - Client-Side Enhancement untuk Katalog Fasilitas (P2)
+ * facility-filter.js - Client-Side Enhancement untuk Katalog Fasilitas (Fotel Style)
  *
  * Memberikan interaksi instan saat memfilter jenis fasilitas pada katalog publik.
  */
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    // Auto-submit saat pilihan tipe berubah untuk kenyamanan pengguna
+    // Auto-submit saat pilihan dropdown berubah
     tipeSelect.addEventListener('change', function () {
         filterForm.submit();
     });

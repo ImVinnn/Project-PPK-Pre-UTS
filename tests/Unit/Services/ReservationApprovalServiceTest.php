@@ -31,7 +31,14 @@ class ReservationApprovalServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->travelTo(Carbon::parse('2026-10-01 08:00:00'));
         $this->service = new ReservationApprovalService(new ReservationAvailabilityService());
+    }
+
+    protected function tearDown(): void
+    {
+        $this->travelBack();
+        parent::tearDown();
     }
 
     private function makeOfficer(): User
@@ -181,11 +188,7 @@ class ReservationApprovalServiceTest extends TestCase
         $this->expectException(ReservationApprovalException::class);
         $this->expectExceptionMessage('melewati waktu mulai');
 
-        try {
-            $this->service->approve($reservation, $officer);
-        } finally {
-            $this->travelBack();
-        }
+        $this->service->approve($reservation, $officer);
     }
 
     // -- approve(): 3c --------------------------------------------------------------

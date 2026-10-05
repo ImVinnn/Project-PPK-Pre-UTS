@@ -1,0 +1,1164 @@
+/**
+ * theme.css - Sistem Desain Referensi Fotel
+ * Clean minimal editorial, warm golden CTAs, dark accent bars, tactile physics.
+ */
+
+:root {
+    /* Canvas & Surfaces */
+    --c-bg: #FFFFFF;
+    --c-bg-subtle: #F9FAFB;
+    --c-bg-muted: #F3F4F6;
+    --c-bg-card: #FFFFFF;
+
+    /* Text Hierarchy */
+    --c-text: #141820;
+    --c-text-secondary: #5E6470;
+    --c-text-muted: #959BA5;
+
+    /* Structural Borders */
+    --c-border: #E5E7EB;
+    --c-border-subtle: #F0F2F5;
+    --c-border-strong: #D1D5DB;
+
+    /* Dark Contrast Band & Footer */
+    --c-dark: #141820;
+    --c-dark-surface: #1E232E;
+    --c-dark-text: #F3F4F6;
+    --c-dark-muted: #9CA3AF;
+
+    /* Warm Gold Accents (Fotel Core CTA) */
+    --c-gold: #F2C94C;
+    --c-gold-hover: #E8BC38;
+    --c-gold-active: #D9AE2A;
+    --c-gold-text: #141820;
+    --c-gold-light: #FEF9E7;
+
+    /* Soft Blue Tint (Care & Guidelines Card) */
+    --c-info-bg: #F0F5FA;
+    --c-info-border: #DCE6F1;
+    --c-info-text: #1E3A5F;
+    --c-info-muted: #4B6B94;
+
+    /* Spot Pastels for Badges & Status */
+    --c-badge-green-bg: #E8F5E9;
+    --c-badge-green-text: #2E7D32;
+    --c-badge-amber-bg: #FFF8E1;
+    --c-badge-amber-text: #B7791F;
+    --c-badge-rose-bg: #FFEBEE;
+    --c-badge-rose-text: #C62828;
+    --c-badge-slate-bg: #ECEFF1;
+    --c-badge-slate-text: #455A64;
+    --c-badge-pink-bg: #FCE4EC;
+    --c-badge-pink-text: #AD1457;
+
+    /* Animation Easing Curves (Emil Design Engineering) */
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+    --duration-fast: 140ms;
+    --duration-base: 220ms;
+    --fotel-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --fotel-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --fotel-duration-page: 240ms;
+    --fotel-duration-hover: 180ms;
+
+    /* Tinggi navbar terukur: 72px, kecuali 992–1199px saat menu terlipat dua baris */
+    --fotel-header-height: 72px;
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    :root {
+        --fotel-header-height: 94px;
+    }
+}
+
+/* ==========================================================================
+   Base Typography & Reset
+   ========================================================================== */
+html, body {
+    background-color: var(--c-bg);
+    color: var(--c-text);
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.01em;
+}
+
+.font-mono, .code-mono {
+    font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace !important;
+}
+
+a {
+    color: var(--c-text);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+}
+
+a:hover {
+    color: #000000;
+}
+
+/* ==========================================================================
+   Header & Navigation (Fotel Clean White Header)
+   ========================================================================== */
+.fotel-header {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid var(--c-border);
+    position: sticky;
+    top: 0;
+    /* Setara .fixed-top Bootstrap: di atas .sticky-top (1020), di bawah backdrop modal (1050) */
+    z-index: 1030;
+}
+
+/* Panel menempel di konten berhenti di bawah navbar. !important dipakai
+   untuk mengalahkan inline style="top: 20px" di view officer/reports/show
+   dan officer/reservations/show; hapus !important kalau inline itu dibuang. */
+main .sticky-top {
+    top: calc(var(--fotel-header-height) + 1rem) !important;
+}
+
+.fotel-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--c-text);
+}
+
+.fotel-logo-icon {
+    width: 24px;
+    height: 24px;
+    display: inline-grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+}
+
+.fotel-logo-icon span {
+    display: block;
+    border-radius: 2px;
+}
+.fotel-logo-icon span:nth-child(1) { background: #E03E7E; }
+.fotel-logo-icon span:nth-child(2) { background: #F2C94C; }
+.fotel-logo-icon span:nth-child(3) { background: #2F80ED; }
+.fotel-logo-icon span:nth-child(4) { background: #27AE60; }
+
+.fotel-location-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--c-text-secondary);
+    padding: 0.3rem 0.6rem;
+    background: var(--c-bg-subtle);
+    border: 1px solid var(--c-border-subtle);
+    border-radius: 4px;
+}
+
+.fotel-nav-link {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text);
+    padding: 0.5rem 0.75rem;
+    position: relative;
+    display: inline-block;
+    transition: color var(--duration-fast) var(--ease-out);
+}
+
+.fotel-nav-link:hover,
+.fotel-nav-link.active-page {
+    color: #000000;
+}
+
+.fotel-nav-link.active-page::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0.75rem;
+    right: 0.75rem;
+    height: 2px;
+    background-color: var(--c-gold);
+}
+
+/* ==========================================================================
+   Buttons (Fotel Warm Gold & Line Styles)
+   ========================================================================== */
+.btn-fotel-gold {
+    background-color: var(--c-gold);
+    color: var(--c-gold-text);
+    border: 1px solid var(--c-gold);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.65rem 1.4rem;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    cursor: pointer;
+    transition: background-color var(--duration-fast) var(--fotel-ease-out),
+                transform 160ms var(--fotel-ease-out),
+                box-shadow 160ms var(--fotel-ease-out),
+                border-color var(--duration-fast) var(--fotel-ease-out);
+    will-change: transform;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .btn-fotel-gold:hover {
+        background-color: var(--c-gold-hover);
+        border-color: var(--c-gold-hover);
+        color: var(--c-gold-text);
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 18px -4px rgba(242, 201, 76, 0.45);
+    }
+}
+
+.btn-fotel-gold:active {
+    transform: translateY(0) scale(0.96);
+    background-color: var(--c-gold-active);
+    transition-duration: 70ms;
+}
+
+.btn-fotel-outline {
+    background-color: transparent;
+    color: var(--c-text);
+    border: 2px solid var(--c-gold);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.6rem 1.3rem;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    cursor: pointer;
+    transition: background-color var(--duration-fast) var(--fotel-ease-out),
+                transform 160ms var(--fotel-ease-out),
+                box-shadow 160ms var(--fotel-ease-out),
+                color var(--duration-fast) var(--fotel-ease-out);
+    will-change: transform;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .btn-fotel-outline:hover {
+        background-color: var(--c-gold-light);
+        color: var(--c-text);
+        transform: translateY(-1px) scale(1.015);
+        box-shadow: 0 4px 12px -2px rgba(242, 201, 76, 0.25);
+    }
+}
+
+.btn-fotel-outline:active {
+    transform: translateY(0) scale(0.96);
+    transition-duration: 70ms;
+}
+
+.btn-fotel-dark {
+    background-color: var(--c-dark);
+    color: #FFFFFF;
+    border: 1px solid var(--c-dark);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.65rem 1.4rem;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color var(--duration-fast) var(--fotel-ease-out),
+                transform 160ms var(--fotel-ease-out),
+                box-shadow 160ms var(--fotel-ease-out);
+    will-change: transform;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .btn-fotel-dark:hover {
+        background-color: #242B38;
+        color: #FFFFFF;
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 18px -4px rgba(20, 24, 32, 0.3);
+    }
+}
+
+.btn-fotel-dark:active {
+    transform: translateY(0) scale(0.96);
+    transition-duration: 70ms;
+}
+
+.btn-fotel-secondary {
+    background-color: var(--c-bg-subtle);
+    color: var(--c-text);
+    border: 1px solid var(--c-border);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color var(--duration-fast) var(--fotel-ease-out),
+                transform 160ms var(--fotel-ease-out),
+                box-shadow 160ms var(--fotel-ease-out),
+                border-color var(--duration-fast) var(--fotel-ease-out);
+    will-change: transform;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .btn-fotel-secondary:hover {
+        background-color: #FFFFFF;
+        border-color: #CBD5E1;
+        color: var(--c-text);
+        transform: translateY(-1px) scale(1.015);
+        box-shadow: 0 4px 12px -2px rgba(0,0,0,0.06);
+    }
+}
+
+.btn-fotel-secondary:active {
+    transform: translateY(0) scale(0.96);
+    transition-duration: 70ms;
+}
+
+/* ==========================================================================
+   Hero Section (Fotel Interior Banner)
+   ========================================================================== */
+.fotel-hero {
+    position: relative;
+    background: #181E27;
+    background-size: cover;
+    background-position: center;
+    color: #FFFFFF;
+    min-height: 380px;
+    display: flex;
+    align-items: center;
+    padding: 4rem 0;
+    overflow: hidden;
+}
+
+.fotel-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(20,24,32,0.85) 0%, rgba(20,24,32,0.65) 60%, rgba(20,24,32,0.4) 100%);
+}
+
+.fotel-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 620px;
+}
+
+.fotel-hero-title {
+    font-size: 2.6rem;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+}
+
+.fotel-hero-text {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #D1D5DB;
+    margin-bottom: 2rem;
+}
+
+/* Stat Box Ringkasan Inventaris */
+.fotel-hero-stat-box {
+    background: rgba(20, 24, 32, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 6px;
+    padding: 1.5rem;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.fotel-hero-stat-box .stat-title {
+    color: #94A3B8;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+}
+
+.fotel-hero-stat-box .stat-number {
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+}
+
+.fotel-hero-stat-box .stat-label {
+    color: #CBD5E1;
+    font-size: 0.78rem;
+    font-weight: 500;
+    line-height: 1.25;
+}
+
+.fotel-hero-stat-box .stat-divider {
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* ==========================================================================
+   Bento Category Grid (Fotel 4x2 White Table Grid)
+   ========================================================================== */
+.fotel-bento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-top: 1px solid var(--c-border);
+    border-left: 1px solid var(--c-border);
+    background: #FFFFFF;
+}
+
+@media (min-width: 768px) {
+    .fotel-bento-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 992px) {
+    .fotel-bento-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+.fotel-bento-cell.is-active {
+    background-color: var(--c-bg-subtle);
+    border-bottom: 3px solid var(--c-gold);
+}
+
+.fotel-bento-cell {
+    border-right: 1px solid var(--c-border);
+    border-bottom: 1px solid var(--c-border);
+    padding: 2.2rem 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 220px;
+    background: #FFFFFF;
+    transition: background-color var(--duration-fast) var(--fotel-ease-out),
+                transform 200ms var(--fotel-ease-out),
+                box-shadow 200ms var(--fotel-ease-out);
+    text-decoration: none;
+    color: var(--c-text);
+    will-change: transform;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .fotel-bento-cell:hover {
+        background-color: var(--c-bg-subtle);
+        color: var(--c-text);
+        transform: translateY(-3px) scale(1.01);
+        box-shadow: 0 12px 24px -6px rgba(20, 24, 32, 0.08);
+    }
+}
+
+.fotel-bento-cell:active {
+    transform: scale(0.98);
+    transition-duration: 80ms;
+}
+
+.fotel-bento-icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+    transition: transform var(--duration-base) var(--ease-spring);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .fotel-bento-cell:hover .fotel-bento-icon {
+        transform: translateY(-4px) scale(1.04);
+    }
+}
+
+.fotel-bento-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--c-text);
+    margin-bottom: 0.25rem;
+}
+
+.fotel-bento-sub {
+    font-size: 0.75rem;
+    color: var(--c-text-muted);
+}
+
+/* ==========================================================================
+   Horizontal Blue Accent Line (Fotel Blue Separator)
+   ========================================================================== */
+.fotel-blue-line,
+.fotel-dark-strip {
+    background-color: #1E3A5F;
+    height: 4px;
+    width: 100%;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* ==========================================================================
+   Facility Listing Cards Grid (Fotel Product Grid)
+   ========================================================================== */
+.fotel-product-card {
+    background: #FFFFFF;
+    border: 1px solid var(--c-border);
+    border-radius: 4px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: border-color var(--duration-fast) var(--fotel-ease-out),
+                box-shadow 220ms var(--fotel-ease-out),
+                transform 220ms var(--fotel-ease-out);
+    will-change: transform, box-shadow;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .fotel-product-card:hover {
+        border-color: #94A3B8;
+        box-shadow: 0 16px 32px -8px rgba(20, 24, 32, 0.12), 0 4px 12px -2px rgba(20, 24, 32, 0.05);
+        transform: translateY(-4px) scale(1.015);
+    }
+}
+
+.fotel-product-card:active {
+    transform: translateY(-1px) scale(0.99);
+    transition-duration: 80ms;
+}
+
+.fotel-card-image-box {
+    background-color: var(--c-bg-subtle);
+    border: 1px solid var(--c-border-subtle);
+    border-radius: 3px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.fotel-card-image-box img,
+.fotel-card-image-box svg {
+    max-height: 80%;
+    max-width: 80%;
+    object-fit: contain;
+    transition: transform var(--duration-base) var(--fotel-ease-spring);
+    will-change: transform;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .fotel-product-card:hover .fotel-card-image-box img,
+    .fotel-product-card:hover .fotel-card-image-box svg {
+        transform: scale(1.06);
+    }
+}
+
+.fotel-card-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--c-text-muted);
+    margin-bottom: 0.35rem;
+}
+
+.fotel-card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--c-text);
+    margin-bottom: 0.5rem;
+    line-height: 1.35;
+}
+
+.fotel-card-meta {
+    font-size: 0.82rem;
+    color: var(--c-text-secondary);
+    margin-bottom: 1.25rem;
+    flex-grow: 1;
+}
+
+/* ==========================================================================
+   Product Detail 2-Column Styles (Fotel Gambar 1)
+   ========================================================================== */
+.fotel-detail-stage {
+    background-color: #FFFFFF;
+    border: 1px solid var(--c-border);
+    border-radius: 4px;
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 2.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.fotel-stage-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    border: 1px solid var(--c-border);
+    border-radius: 50%;
+    color: var(--c-text);
+    cursor: pointer;
+    transition: background-color var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+}
+
+.fotel-stage-arrow:hover {
+    background-color: var(--c-bg-subtle);
+}
+
+.fotel-stage-arrow:active {
+    transform: translateY(-50%) scale(0.92);
+}
+
+.fotel-stage-arrow.left { left: 1rem; }
+.fotel-stage-arrow.right { right: 1rem; }
+
+.fotel-thumbnail-strip {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+}
+
+.fotel-thumb {
+    width: 64px;
+    height: 64px;
+    border: 1px solid var(--c-border);
+    border-radius: 3px;
+    background: var(--c-bg-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.fotel-thumb.active,
+.fotel-thumb:hover {
+    border-color: var(--c-dark);
+}
+
+.fotel-thumb img {
+    max-width: 85%;
+    max-height: 85%;
+    object-fit: contain;
+}
+
+/* Stepper Input */
+.fotel-stepper {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--c-border);
+    border-radius: 3px;
+    background: #FFFFFF;
+}
+
+.fotel-stepper-btn {
+    width: 40px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    font-size: 1.1rem;
+    color: var(--c-text);
+    cursor: pointer;
+    transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.fotel-stepper-btn:hover {
+    background-color: var(--c-bg-subtle);
+}
+
+.fotel-stepper-input {
+    width: 48px;
+    height: 42px;
+    text-align: center;
+    border: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--c-text);
+    background: transparent;
+}
+
+.fotel-stepper-input:focus {
+    outline: none;
+}
+
+/* Accordion Lines */
+.fotel-accordion-item {
+    border-bottom: 1px solid var(--c-border);
+}
+
+.fotel-accordion-btn {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    background: transparent;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--c-text);
+    cursor: pointer;
+    text-align: left;
+}
+
+.fotel-accordion-content {
+    padding-bottom: 1.25rem;
+    font-size: 0.88rem;
+    color: var(--c-text-secondary);
+    line-height: 1.6;
+}
+
+/* Care / Instructions Card */
+.fotel-info-card {
+    background-color: var(--c-info-bg);
+    border: 1px solid var(--c-info-border);
+    border-radius: 4px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.fotel-info-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--c-info-text);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.85rem;
+}
+
+.fotel-info-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.82rem;
+    color: var(--c-info-text);
+    line-height: 1.7;
+}
+
+.fotel-info-list li {
+    margin-bottom: 0.4rem;
+}
+
+/* ==========================================================================
+   26-Slot Availability Grid (Integrated Matrix)
+   ========================================================================== */
+.fotel-slot-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+@media (min-width: 576px) {
+    .fotel-slot-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 768px) {
+    .fotel-slot-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (min-width: 992px) {
+    .fotel-slot-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+.fotel-slot-card {
+    background: #FFFFFF;
+    border: 1px solid var(--c-border);
+    border-radius: 4px;
+    padding: 0.9rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 180ms var(--fotel-ease-out),
+                border-color 180ms var(--fotel-ease-out),
+                box-shadow 180ms var(--fotel-ease-out);
+    position: relative;
+    will-change: transform;
+}
+
+.fotel-slot-card.available {
+    border-color: #C8E6C9;
+    background-color: #FAFDFB;
+}
+
+.fotel-slot-card.occupied {
+    border-color: var(--c-border);
+    background-color: #F8F9FA;
+    opacity: 0.75;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .fotel-slot-card.available:hover {
+        transform: translateY(-3px) scale(1.025);
+        border-color: #4CAF50;
+        box-shadow: 0 8px 20px -4px rgba(46, 125, 50, 0.16);
+        cursor: pointer;
+    }
+}
+
+.fotel-slot-card.available:active {
+    transform: scale(0.97);
+    transition-duration: 80ms;
+}
+
+.fotel-slot-num {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--c-text-muted);
+}
+
+.fotel-slot-time {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--c-text);
+    margin: 0.25rem 0;
+}
+
+/* ==========================================================================
+   Badges (Spot Pastels Minimalist)
+   ========================================================================== */
+.fotel-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.55rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-radius: 3px;
+    line-height: 1;
+}
+
+.fotel-badge-green {
+    background-color: var(--c-badge-green-bg);
+    color: var(--c-badge-green-text);
+}
+
+.fotel-badge-amber {
+    background-color: var(--c-badge-amber-bg);
+    color: var(--c-badge-amber-text);
+}
+
+.fotel-badge-rose {
+    background-color: var(--c-badge-rose-bg);
+    color: var(--c-badge-rose-text);
+}
+
+.fotel-badge-slate {
+    background-color: var(--c-badge-slate-bg);
+    color: var(--c-badge-slate-text);
+}
+
+.fotel-badge-gold {
+    background-color: var(--c-gold);
+    color: var(--c-gold-text);
+}
+
+/* ==========================================================================
+   Footer (Fotel Dark Charcoal Block)
+   ========================================================================== */
+.fotel-footer {
+    background-color: var(--c-dark);
+    color: #CBD5E1;
+    padding: 4rem 0 2rem;
+    margin-top: 5rem;
+    border-top: 1px solid #232A36;
+}
+
+.fotel-footer p {
+    color: #94A3B8;
+}
+
+.fotel-footer a {
+    color: #CBD5E1;
+    transition: color var(--duration-fast) var(--fotel-ease-out);
+}
+
+.fotel-footer a:hover {
+    color: #FFFFFF;
+}
+
+.fotel-footer .text-muted {
+    color: #94A3B8 !important;
+}
+
+.fotel-footer-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #FFFFFF;
+    margin-bottom: 1.25rem;
+}
+
+.fotel-footer-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.fotel-footer-list li {
+    color: #94A3B8;
+    line-height: 1.6;
+}
+
+.fotel-footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    font-size: 0.78rem;
+    color: #94A3B8;
+}
+
+.fotel-footer-bottom a {
+    color: #94A3B8;
+}
+
+.fotel-footer-bottom a:hover {
+    color: #FFFFFF;
+}
+
+/* ==========================================================================
+   Page Container & Negative Space (Fotel Editorial Inset Margins)
+   ========================================================================== */
+.fotel-container {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .fotel-container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .fotel-container {
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;
+    }
+}
+
+/* Navbar selebar layar; konten halaman tetap memakai max-width di atas */
+.fotel-header .fotel-container {
+    max-width: none;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+    .fotel-header .fotel-container {
+        padding-left: 1.75rem;
+        padding-right: 1.75rem;
+    }
+}
+
+/* ==========================================================================
+   Motion Language & Page Transitions (Fotel Motion Design)
+   ========================================================================== */
+@view-transition {
+    navigation: auto;
+}
+
+::view-transition-old(root) {
+    animation: 120ms var(--fotel-ease-out) both fotelFadeOut;
+}
+
+::view-transition-new(root) {
+    animation: 240ms var(--fotel-ease-out) both fotelPageRise;
+}
+
+@keyframes fotelPageRise {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fotelFadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.fotel-page-transition {
+    animation: fotelPageRise var(--fotel-duration-page) var(--fotel-ease-out) backwards;
+}
+
+.fotel-page-transition.is-exiting {
+    animation: fotelFadeOut 110ms var(--fotel-ease-out) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fotel-page-transition,
+    .fotel-page-transition.is-exiting {
+        animation: none !important;
+        transform: none !important;
+    }
+}
+
+/* ==========================================================================
+   Staggered Scroll Reveals (The Discovery)
+   ========================================================================== */
+.fotel-reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 450ms var(--fotel-ease-out), transform 450ms var(--fotel-ease-out);
+    will-change: opacity, transform;
+}
+
+.fotel-reveal.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.fotel-stagger-1 {
+    transition-delay: 30ms;
+}
+
+.fotel-stagger-2 {
+    transition-delay: 60ms;
+}
+
+.fotel-stagger-3 {
+    transition-delay: 90ms;
+}
+
+.fotel-stagger-4 {
+    transition-delay: 120ms;
+}
+
+.fotel-stagger-5 {
+    transition-delay: 150ms;
+}
+
+.fotel-stagger-6 {
+    transition-delay: 180ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fotel-reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}
+
+/* ==========================================================================
+   Skeleton Shimmer Placeholders (The Waiting State)
+   ========================================================================== */
+@keyframes fotelShimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.fotel-skeleton {
+    background: linear-gradient(90deg, #F0F2F5 25%, #FAFAFA 50%, #F0F2F5 75%);
+    background-size: 200% 100%;
+    animation: fotelShimmer 1.6s infinite ease-in-out;
+    border-radius: 3px;
+}
+
+.fotel-skeleton-card {
+    background: #FFFFFF;
+    border: 1px solid var(--c-border);
+    border-radius: 4px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.fotel-skeleton-img {
+    height: 200px;
+    margin-bottom: 1.25rem;
+}
+
+.fotel-skeleton-line {
+    height: 14px;
+    margin-bottom: 0.6rem;
+}
+
+.fotel-skeleton-line.short {
+    width: 35%;
+}
+
+.fotel-skeleton-line.medium {
+    width: 65%;
+}
+
+.fotel-skeleton-line.long {
+    width: 88%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fotel-skeleton {
+        animation: none !important;
+        background: #F0F2F5 !important;
+    }
+}
+
+
+
+

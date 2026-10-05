@@ -4,6 +4,8 @@ use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\BuildingController;
 use App\Http\Controllers\Admin\FacilityController as AdminFacilityController;
 use App\Http\Controllers\Admin\FacultyController;
+use App\Http\Controllers\Admin\RecapController;
+use App\Services\RecapService;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\ReservationController;
@@ -67,7 +69,7 @@ Route::middleware(['auth', 'active'])->group(function (): void {
         ->name('admin.')
         ->middleware('role:'.Status::ROLE_ADMIN)
         ->group(function (): void {
-            Route::view('/', 'dashboard')->name('dashboard');
+            Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
             Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index');
             Route::get('/accounts/create', [AccountController::class, 'create'])->name('accounts.create');
             Route::post('/accounts', [AccountController::class, 'store'])->name('accounts.store');
@@ -83,5 +85,12 @@ Route::middleware(['auth', 'active'])->group(function (): void {
             Route::put('/facilities/{facility}', [AdminFacilityController::class, 'update'])->name('facilities.update');
             Route::patch('/facilities/{facility}/deactivate', [AdminFacilityController::class, 'deactivate'])
                 ->name('facilities.deactivate');
+            Route::patch('/facilities/{facility}/activate', [AdminFacilityController::class, 'activate'])
+                ->name('facilities.activate');
+
+            Route::get('/recaps', [RecapController::class, 'index'])->name('recaps.index');
+            Route::get('/recaps/export/{type}', [RecapController::class, 'export'])
+                ->whereIn('type', array_keys(RecapService::COLUMNS))
+                ->name('recaps.export');
         });
 });
