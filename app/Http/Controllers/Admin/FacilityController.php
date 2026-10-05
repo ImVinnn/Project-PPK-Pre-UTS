@@ -8,7 +8,9 @@ use App\Http\Requests\UpdateFacilityRequest;
 use App\Models\Building;
 use App\Models\Facility;
 use App\Models\Faculty;
+use App\Models\Reservation;
 use App\Support\Status;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +37,15 @@ class FacilityController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return view('admin.facilities.index', compact('facilities'));
+        // Untuk peringatan di modal nonaktifkan (PRD US16): satu query untuk seluruh halaman.
+        $upcomingApproved = $this->upcomingApprovedQuery()
+            ->whereIn('facility_id', $facilities->pluck('id'))
+            ->with('user:id,name')
+            ->orderBy('start_time')
+            ->get()
+            ->groupBy('facility_id');
+
+        return view('admin.facilities.index', compact('facilities', 'upcomingApproved'));
     }
 
     /**
@@ -116,8 +126,39 @@ class FacilityController extends Controller
     {
         $facility->update(['status' => Status::FACILITY_INACTIVE]);
 
+        // Reservasi approved tidak dibatalkan otomatis; petugas yang memutuskan.
+        $upcoming = $this->upcomingApprovedQuery()->where('facility_id', $facility->id)->count();
+        $message = 'Fasilitas berhasil dinonaktifkan.';
+
+        if ($upcoming > 0) {
+            $message .= " Masih ada {$upcoming} reservasi disetujui di masa depan yang tidak dibatalkan otomatis; minta petugas meninjaunya.";
+        }
+
+        return to_route('admin.facilities.index')->with('success', $message);
+    }
+
+    /**
+     * Reactivate an inactive facility. Active ↔ maintenance is the officer's call, not the admin's.
+     */
+    public function activate(Facility $facility): RedirectResponse
+    {
+        if ($facility->status !== Status::FACILITY_INACTIVE) {
+            return to_route('admin.facilities.index')
+                ->with('error', 'Hanya fasilitas nonaktif yang dapat diaktifkan kembali.');
+        }
+
+        $facility->update(['status' => Status::FACILITY_ACTIVE]);
+
         return to_route('admin.facilities.index')
-            ->with('success', 'Fasilitas berhasil dinonaktifkan.');
+            ->with('success', 'Fasilitas berhasil diaktifkan kembali.');
+    }
+
+    /**
+     * @return Builder<Reservation>
+     */
+    private function upcomingApprovedQuery(): Builder
+    {
+        return Reservation::query()->approved()->where('start_time', '>', now());
     }
 
     /**

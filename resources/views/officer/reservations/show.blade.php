@@ -105,7 +105,7 @@
                             <tr>
                                 <td class="detail-label">Waktu Penggunaan</td>
                                 <td>
-                                    {{ $reservation->start_time->format('d M Y, H:i') }}
+                                    {{ $reservation->start_time->translatedFormat('d M Y, H:i') }}
                                     &ndash;
                                     {{ $reservation->end_time->format('H:i') }} WIB
                                 </td>
@@ -122,13 +122,13 @@
                             </tr>
                             <tr>
                                 <td class="detail-label">Diajukan Pada</td>
-                                <td>{{ $reservation->created_at->format('d M Y, H:i') }} WIB</td>
+                                <td>{{ $reservation->created_at->translatedFormat('d M Y, H:i') }} WIB</td>
                             </tr>
 
                             @if ($reservation->status === 'rejected')
                                 <tr>
                                     <td class="detail-label">Diproses Oleh</td>
-                                    <td>{{ $reservation->processor->name ?? '-' }} &middot; {{ $reservation->processed_at?->format('d M Y, H:i') }} WIB</td>
+                                    <td>{{ $reservation->processor->name ?? '-' }} &middot; {{ $reservation->processed_at?->translatedFormat('d M Y, H:i') }} WIB</td>
                                 </tr>
                                 <tr>
                                     <td class="detail-label">Alasan Penolakan</td>
@@ -141,14 +141,14 @@
                             @if ($reservation->status === 'approved')
                                 <tr>
                                     <td class="detail-label">Disetujui Oleh</td>
-                                    <td>{{ $reservation->processor->name ?? '-' }} &middot; {{ $reservation->processed_at?->format('d M Y, H:i') }} WIB</td>
+                                    <td>{{ $reservation->processor->name ?? '-' }} &middot; {{ $reservation->processed_at?->translatedFormat('d M Y, H:i') }} WIB</td>
                                 </tr>
                             @endif
 
                             @if ($reservation->status === 'cancelled')
                                 <tr>
                                     <td class="detail-label">Dibatalkan Oleh</td>
-                                    <td>{{ $reservation->canceller->name ?? '-' }} &middot; {{ $reservation->cancelled_at?->format('d M Y, H:i') }} WIB</td>
+                                    <td>{{ $reservation->canceller->name ?? '-' }} &middot; {{ $reservation->cancelled_at?->translatedFormat('d M Y, H:i') }} WIB</td>
                                 </tr>
                                 <tr>
                                     <td class="detail-label">Alasan Pembatalan</td>
@@ -192,7 +192,7 @@
                                     @foreach ($conflictInfo['conflicts'] as $conflict)
                                         <li>
                                             #{{ $conflict->id }} &middot;
-                                            {{ $conflict->start_time->format('d M Y, H:i') }}
+                                            {{ $conflict->start_time->translatedFormat('d M Y, H:i') }}
                                             &ndash;
                                             {{ $conflict->end_time->format('H:i') }} WIB
                                         </li>

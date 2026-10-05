@@ -120,7 +120,7 @@
                                 @endphp
                                 <tr>
                                     <td class="ps-4">
-                                        <span class="small">{{ $reservation->created_at->format('d M Y') }}</span>
+                                        <span class="small">{{ $reservation->created_at->translatedFormat('d M Y') }}</span>
                                         <br>
                                         <small class="text-muted">{{ $reservation->created_at->format('H:i') }} WIB</small>
                                     </td>
@@ -131,7 +131,7 @@
                                     </td>
                                     <td>{{ $reservation->facility->name ?? '-' }}</td>
                                     <td class="small">
-                                        {{ $reservation->start_time->format('d M Y, H:i') }}
+                                        {{ $reservation->start_time->translatedFormat('d M Y, H:i') }}
                                         &ndash;
                                         {{ $reservation->end_time->format('H:i') }} WIB
                                     </td>
@@ -144,9 +144,15 @@
                                     </td>
                                     <td><span class="badge {{ $statusBadge }}">{{ $statusLabel }}</span></td>
                                     <td class="pe-4 text-center">
-                                        <a href="{{ route('officer.reservations.show', $reservation) }}" class="btn btn-sm btn-outline-primary px-3">
-                                            Proses
-                                        </a>
+                                        @if (in_array($reservation->status, [\App\Support\Status::RESERVATION_PENDING, \App\Support\Status::RESERVATION_APPROVED], true))
+                                            <a href="{{ route('officer.reservations.show', $reservation) }}" class="btn btn-sm btn-outline-primary px-3">
+                                                Proses
+                                            </a>
+                                        @else
+                                            <a href="{{ route('officer.reservations.show', $reservation) }}" class="btn btn-sm btn-outline-secondary px-3">
+                                                Lihat
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
