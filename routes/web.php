@@ -85,6 +85,8 @@ Route::middleware(['auth', 'active'])->group(function (): void {
             Route::put('/facilities/{facility}', [AdminFacilityController::class, 'update'])->name('facilities.update');
             Route::patch('/facilities/{facility}/deactivate', [AdminFacilityController::class, 'deactivate'])
                 ->name('facilities.deactivate');
+            Route::patch('/facilities/{facility}/activate', [AdminFacilityController::class, 'activate'])
+                ->name('facilities.activate');
 
             Route::get('/recaps', [RecapController::class, 'index'])->name('recaps.index');
             Route::get('/recaps/export/{type}', [RecapController::class, 'export'])

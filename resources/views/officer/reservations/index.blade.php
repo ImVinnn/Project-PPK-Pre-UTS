@@ -144,9 +144,15 @@
                                     </td>
                                     <td><span class="badge {{ $statusBadge }}">{{ $statusLabel }}</span></td>
                                     <td class="pe-4 text-center">
-                                        <a href="{{ route('officer.reservations.show', $reservation) }}" class="btn btn-sm btn-outline-primary px-3">
-                                            Proses
-                                        </a>
+                                        @if (in_array($reservation->status, [\App\Support\Status::RESERVATION_PENDING, \App\Support\Status::RESERVATION_APPROVED], true))
+                                            <a href="{{ route('officer.reservations.show', $reservation) }}" class="btn btn-sm btn-outline-primary px-3">
+                                                Proses
+                                            </a>
+                                        @else
+                                            <a href="{{ route('officer.reservations.show', $reservation) }}" class="btn btn-sm btn-outline-secondary px-3">
+                                                Lihat
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
