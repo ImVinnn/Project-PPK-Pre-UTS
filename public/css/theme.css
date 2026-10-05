@@ -1022,8 +1022,7 @@ a:hover {
 }
 
 .fotel-page-transition {
-    animation: fotelPageRise var(--fotel-duration-page) var(--fotel-ease-out) forwards;
-    will-change: opacity, transform;
+    animation: fotelPageRise var(--fotel-duration-page) var(--fotel-ease-out) backwards;
 }
 
 .fotel-page-transition.is-exiting {
