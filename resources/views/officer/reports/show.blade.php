@@ -321,7 +321,7 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    (function () {
         const statusSelect = document.getElementById('status');
         const resolutionStar = document.getElementById('resolution-required-star');
         const resolutionHint = document.getElementById('resolution-hint');
@@ -344,6 +344,6 @@
 
         statusSelect.addEventListener('change', updateRequirement);
         updateRequirement();
-    });
+    })();
 </script>
 @endsection

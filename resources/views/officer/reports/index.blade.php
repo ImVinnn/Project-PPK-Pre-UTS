@@ -42,6 +42,7 @@
 </div>
 
 <div class="container mb-5">
+    <div class="text-end mb-3"><button type="button" class="btn btn-outline-secondary btn-sm" data-ajax-refresh>Perbarui Laporan</button></div>
 
     {{-- Flash message --}}
     @if (session('success'))
@@ -168,4 +169,3 @@
     </div>
 </div>
 @endsection
-

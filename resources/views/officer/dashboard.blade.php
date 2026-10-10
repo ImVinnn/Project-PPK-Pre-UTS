@@ -11,6 +11,7 @@
             <p class="text-secondary small mb-0">Ringkasan antrean verifikasi reservasi dan laporan penanganan kerusakan fasilitas.</p>
         </div>
         <div class="d-flex gap-2">
+            <button type="button" class="btn-fotel-secondary py-1 px-3" data-ajax-refresh>Perbarui Data</button>
             <a href="{{ route('officer.reservations.index') }}" class="btn-fotel-secondary py-1 px-3">
                 Antrean Reservasi
             </a>
