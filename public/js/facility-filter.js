@@ -4,7 +4,7 @@
  * Memberikan interaksi instan saat memfilter jenis fasilitas pada katalog publik.
  */
 
-document.addEventListener('DOMContentLoaded', function () {
+function initFacilityFilter() {
     const tipeSelect = document.getElementById('tipe');
     const filterForm = tipeSelect ? tipeSelect.closest('form') : null;
 
@@ -14,6 +14,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Auto-submit saat pilihan dropdown berubah
     tipeSelect.addEventListener('change', function () {
-        filterForm.submit();
+        filterForm.requestSubmit();
     });
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFacilityFilter, { once: true });
+} else {
+    initFacilityFilter();
+}
