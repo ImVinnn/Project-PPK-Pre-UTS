@@ -10,6 +10,7 @@ function browser() {
     const listeners = {};
     const calls = [];
     const history = [];
+    const scrolls = [];
     const main = {
         innerHTML: 'old page',
         setAttribute() {},
@@ -28,7 +29,9 @@ function browser() {
             window.location.href = url;
         } },
         addEventListener: (name, callback) => { windowListeners[name] = callback; },
-        scrollTo() {},
+        scrollX: 0,
+        scrollY: 0,
+        scrollTo: (options) => { scrolls.push(options); },
     };
     const document = {
         documentElement: { classList },
@@ -67,7 +70,7 @@ function browser() {
         },
     };
     vm.runInNewContext(source, context);
-    return { listeners, windowListeners, calls, history, main, window, HTMLFormElement };
+    return { listeners, windowListeners, calls, history, scrolls, main, window, HTMLFormElement };
 }
 
 async function settle() {
@@ -159,4 +162,134 @@ test('CSV downloads and cancelled confirmation forms keep native behaviour', asy
     });
     await settle();
     assert.equal(app.calls.length, 0);
+});
+
+// -- Posisi gulir ---------------------------------------------------------
+
+// Objek dari vm punya prototipe lain, jadi bandingkan lewat JSON.
+const plain = (value) => JSON.parse(JSON.stringify(value));
+
+function linkTo(href, extra = {}) {
+    return { href, target: '', hasAttribute: () => false, closest: () => null, ...extra };
+}
+
+function clickLink(app, link) {
+    app.listeners.click({
+        target: { closest: (selector) => selector === 'a[href]' ? link : null },
+        button: 0,
+        defaultPrevented: false,
+        preventDefault() {},
+    });
+}
+
+function formFor(app, method, action, extra = {}) {
+    const form = new app.HTMLFormElement();
+    form.method = method;
+    form.action = action;
+    form.hasAttribute = () => false;
+    form.closest = () => null;
+    return Object.assign(form, extra);
+}
+
+test('GET form on the same page (filter) keeps the scroll position', async () => {
+    const app = browser();
+    app.window.scrollY = 480;
+    app.window.scrollX = 12;
+    app.listeners.submit({
+        target: formFor(app, 'GET', 'http://localhost/'),
+        defaultPrevented: false,
+        preventDefault() {},
+    });
+    await settle();
+
+    assert.equal(app.calls.length, 1);
+    assert.deepEqual(plain(app.scrolls), [{ left: 12, top: 480, behavior: 'instant' }]);
+});
+
+test('GET form to another page scrolls to the top', async () => {
+    const app = browser();
+    app.window.scrollY = 480;
+    app.listeners.submit({
+        target: formFor(app, 'GET', 'http://localhost/search'),
+        defaultPrevented: false,
+        preventDefault() {},
+    });
+    await settle();
+
+    assert.deepEqual(plain(app.scrolls), [{ top: 0, behavior: 'auto' }]);
+});
+
+test('data-ajax-refresh keeps the scroll position and does not touch history', async () => {
+    const app = browser();
+    app.window.scrollY = 900;
+    const button = { closest: (selector) => selector === '[data-ajax-refresh]' ? button : null };
+    app.listeners.click({ target: button, preventDefault() {} });
+    await settle();
+
+    assert.equal(app.calls.length, 1);
+    assert.equal(app.history.length, 0);
+    assert.deepEqual(plain(app.scrolls), [{ left: 0, top: 900, behavior: 'instant' }]);
+});
+
+test('links to other pages, including pagination, scroll to the top', async () => {
+    const app = browser();
+    app.window.scrollY = 700;
+    clickLink(app, linkTo('http://localhost/reservations'));
+    await settle();
+    app.window.scrollY = 700;
+    clickLink(app, linkTo('http://localhost/reservations?page=2'));
+    await settle();
+
+    assert.equal(app.calls.length, 2);
+    assert.deepEqual(plain(app.scrolls), [{ top: 0, behavior: 'auto' }, { top: 0, behavior: 'auto' }]);
+});
+
+test('a link inside data-ajax-scroll="preserve" keeps the scroll position', async () => {
+    const app = browser();
+    app.window.scrollY = 350;
+    clickLink(app, linkTo('http://localhost/?tipe=alat', {
+        closest: (selector) => selector === '[data-ajax-scroll="preserve"]' ? {} : null,
+    }));
+    await settle();
+
+    assert.deepEqual(plain(app.scrolls), [{ left: 0, top: 350, behavior: 'instant' }]);
+});
+
+test('POST scrolls to the top even when the server redirects back to the same URL', async () => {
+    const app = browser();
+    app.window.scrollY = 600;
+    app.listeners.submit({
+        target: formFor(app, 'POST', 'http://localhost/'),
+        defaultPrevented: false,
+        preventDefault() {},
+    });
+    await settle();
+
+    assert.equal(app.calls[0].options.method, 'POST');
+    assert.deepEqual(plain(app.scrolls), [{ top: 0, behavior: 'auto' }]);
+});
+
+test('Back/Forward does not scroll', async () => {
+    const app = browser();
+    app.windowListeners.popstate();
+    await settle();
+
+    assert.equal(app.scrolls.length, 0);
+});
+
+test('preserved scroll skips the staggered entrance by revealing new elements at once', async () => {
+    const app = browser();
+    const revealed = [];
+    app.main.querySelectorAll = (selector) => selector === '.fotel-reveal'
+        ? [{ classList: { add: (name) => revealed.push(name) } }, { classList: { add: (name) => revealed.push(name) } }]
+        : [];
+    app.window.scrollY = 200;
+    app.listeners.submit({
+        target: formFor(app, 'GET', 'http://localhost/'),
+        defaultPrevented: false,
+        preventDefault() {},
+    });
+    await settle();
+
+    assert.deepEqual(revealed, ['is-revealed', 'is-revealed']);
 });
