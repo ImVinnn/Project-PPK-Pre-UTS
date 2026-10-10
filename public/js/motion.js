@@ -25,6 +25,7 @@
         });
 
         document.addEventListener('click', function (e) {
+            if (e.defaultPrevented) return;
             const anchor = e.target.closest('a');
             if (!anchor) return;
 
@@ -207,5 +208,10 @@
     } else {
         init();
     }
-})();
 
+    document.addEventListener('sora:page-updated', function () {
+        initScrollReveals();
+        initCatalogSkeletons();
+        initStatCounters();
+    });
+})();
