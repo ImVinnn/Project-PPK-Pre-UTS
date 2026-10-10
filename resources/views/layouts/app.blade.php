@@ -3,7 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'Sistem Peminjaman Fasilitas Kampus')</title>
+    @php
+        $pageTitle = trim(preg_replace('/\s*[-—]\s*Fasilitas Kampus$/u', '', html_entity_decode($__env->yieldContent('title'))));
+    @endphp
+    <title>{{ $pageTitle !== '' ? $pageTitle.' — SORA' : 'SORA' }}</title>
+
+    {{-- Favicon SORA --}}
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/brand/sora-favicon-32.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/brand/sora-apple-touch-180.png') }}">
 
     {{-- Bootstrap 5.3 Framework for Responsive Grid --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -24,22 +31,11 @@
                 {{-- Brand & Lokasi --}}
                 <div class="d-flex align-items-center gap-3">
                     <a class="fotel-brand text-decoration-none" href="{{ route('facilities.index') }}">
-                        <div class="fotel-logo-icon" aria-hidden="true">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                        <span>Fasilitas Kampus</span>
+                        <img src="{{ asset('images/brand/sora-icon.png') }}" alt="SORA" class="fotel-brand-icon">
+                        <span class="fotel-brand-text">SORA</span>
                     </a>
 
-                    <div class="fotel-location-chip d-none d-sm-inline-flex" title="Lokasi Kampus Operasional">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                        <span>Kampus Terpadu</span>
-                    </div>
+                    <span class="fotel-brand-sub d-none d-sm-inline">Fasilitas Kampus</span>
                 </div>
 
                 {{-- Hamburger Mobile Button --}}
@@ -188,14 +184,10 @@
             <div class="row g-4">
                 <div class="col-lg-4">
                     <div class="d-flex align-items-center gap-2 mb-3">
-                        <div class="fotel-logo-icon" aria-hidden="true">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                        <span class="fs-5 fw-bold text-white tracking-tight">Fasilitas Kampus</span>
+                        <span class="fotel-brand-chip"><img src="{{ asset('images/brand/sora-icon.png') }}" alt="SORA" class="fotel-brand-icon"></span>
+                        <span class="fotel-brand-text fs-5 text-white">SORA</span>
                     </div>
+                    <p class="small fw-semibold mb-2 text-white">Sistem Operasional Reservasi dan Aduan Fasilitas Kampus</p>
                     <p class="small mb-0" style="max-width: 38ch; line-height: 1.7; color: #CBD5E1;">
                         Portal terintegrasi pengelolaan ruang kelas, laboratorium riset, aula serbaguna, dan peralatan kampus dengan sistem alokasi 26 slot waktu harian.
                     </p>
@@ -242,7 +234,7 @@
             </div>
 
             <div class="fotel-footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-                <div style="color: #94A3B8;">&copy; {{ date('Y') }} Sistem Peminjaman Fasilitas Kampus. Hak cipta dilindungi.</div>
+                <div style="color: #94A3B8;">&copy; {{ date('Y') }} SORA — Sistem Operasional Reservasi dan Aduan Fasilitas Kampus. Hak cipta dilindungi.</div>
                 <div class="d-flex gap-3">
                     <a href="{{ route('facilities.index') }}">Kebijakan Privasi</a>
                     <span style="color: #475569;">&middot;</span>

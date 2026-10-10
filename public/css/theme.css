@@ -126,36 +126,38 @@ main .sticky-top {
     color: var(--c-text);
 }
 
-.fotel-logo-icon {
-    width: 24px;
-    height: 24px;
-    display: inline-grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2px;
+/* Identitas SORA: tinggi ikon 32px agar navbar tetap 72px */
+.fotel-brand-icon {
+    height: 32px;
+    width: auto;
+    display: inline-block;
 }
 
-.fotel-logo-icon span {
-    display: block;
-    border-radius: 2px;
+.fotel-brand-icon-lg {
+    height: 56px;
 }
-.fotel-logo-icon span:nth-child(1) { background: #E03E7E; }
-.fotel-logo-icon span:nth-child(2) { background: #F2C94C; }
-.fotel-logo-icon span:nth-child(3) { background: #2F80ED; }
-.fotel-logo-icon span:nth-child(4) { background: #27AE60; }
 
-.fotel-location-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
+.fotel-brand-text {
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+.fotel-brand-sub {
     font-size: 0.78rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     color: var(--c-text-secondary);
-    padding: 0.3rem 0.6rem;
-    background: var(--c-bg-subtle);
-    border: 1px solid var(--c-border-subtle);
-    border-radius: 4px;
+    padding-left: 0.75rem;
+    border-left: 1px solid var(--c-border);
+}
+
+/* Latar putih agar badan ikon gelap terbaca di footer hitam arang */
+.fotel-brand-chip {
+    display: inline-flex;
+    padding: 4px 6px;
+    background: #FFFFFF;
+    border-radius: 6px;
 }
 
 .fotel-nav-link {
