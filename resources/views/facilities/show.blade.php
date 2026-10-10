@@ -175,7 +175,7 @@
                            value="{{ $selectedDate }}" 
                            min="{{ $today }}" 
                            max="{{ $maxDate }}" 
-                           onchange="this.form.submit()">
+                           onchange="this.form.requestSubmit()">
                     <button type="submit" class="btn-fotel-secondary px-3">
                         Cek
                     </button>

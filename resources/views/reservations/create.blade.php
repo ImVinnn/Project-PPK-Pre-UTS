@@ -128,7 +128,7 @@
                         </label>
                         <select class="form-select @error('facility_id') is-invalid @enderror" 
                                 id="facility_id" name="facility_id" 
-                                onchange="window.location.href = '{{ route('reservations.create') }}?facility_id=' + this.value + '&date=' + document.getElementById('date').value">
+                                onchange="const url = '{{ route('reservations.create') }}?facility_id=' + encodeURIComponent(this.value) + '&date=' + encodeURIComponent(document.getElementById('date').value); window.SoraAjax ? SoraAjax.navigate(url) : window.location.assign(url)">
                             <option value="">-- Pilih Fasilitas Aktif --</option>
                             @foreach($facilities as $fac)
                                 <option value="{{ $fac->id }}" @selected(old('facility_id', $selectedFacility?->id) == $fac->id)>
@@ -152,7 +152,7 @@
                                    value="{{ old('date', $selectedDate) }}" 
                                    min="{{ $today }}" 
                                    max="{{ $maxDate }}"
-                                   onchange="if(document.getElementById('facility_id').value) { window.location.href = '{{ route('reservations.create') }}?facility_id=' + document.getElementById('facility_id').value + '&date=' + this.value; }">
+                                   onchange="if(document.getElementById('facility_id').value) { const url = '{{ route('reservations.create') }}?facility_id=' + encodeURIComponent(document.getElementById('facility_id').value) + '&date=' + encodeURIComponent(this.value); window.SoraAjax ? SoraAjax.navigate(url) : window.location.assign(url); }">
                             <div class="form-text small">Maksimal pengajuan 90 hari ke depan.</div>
                             @error('date')
                                 <div class="invalid-feedback">{{ $message }}</div>

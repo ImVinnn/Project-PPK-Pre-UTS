@@ -10,7 +10,8 @@
             <h1 class="fs-2 fw-bold text-dark mb-1 tracking-tight">Status Laporan Kerusakan</h1>
             <p class="text-secondary small mb-0">Pantau status penanganan dan perbaikan fasilitas yang telah Anda ajukan.</p>
         </div>
-        <div>
+        <div class="d-flex gap-2">
+            <button type="button" class="btn-fotel-secondary py-1 px-3" data-ajax-refresh>Perbarui Laporan</button>
             <a href="{{ route('reports.create') }}" class="btn-fotel-gold py-1 px-3">
                 + Buat Laporan Baru
             </a>

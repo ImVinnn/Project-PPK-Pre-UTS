@@ -10,7 +10,10 @@
             <h1 class="font-serif fw-semibold mb-1">Gedung</h1>
             <p class="text-secondary mb-0">Kelola gedung fakultas dan gedung tingkat universitas.</p>
         </div>
-        <a href="{{ route('admin.buildings.create') }}" class="btn btn-primary">Tambah Gedung</a>
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary" data-ajax-refresh>Perbarui Data</button>
+            <a href="{{ route('admin.buildings.create') }}" class="btn btn-primary">Tambah Gedung</a>
+        </div>
     </div>
 
     @if (session('success'))

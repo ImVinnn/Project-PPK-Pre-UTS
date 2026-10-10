@@ -6,7 +6,7 @@
  * seluruh aturan tetap ditegakkan secara mutlak oleh StoreReservationRequest di sisi server.
  */
 
-document.addEventListener('DOMContentLoaded', function () {
+function initSlotPicker() {
     const startTimeSelect = document.getElementById('start_time');
     const endTimeSelect = document.getElementById('end_time');
     const durationText = document.getElementById('durationText');
@@ -97,4 +97,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     updateEndTimeOptions();
     updateDurationDisplay();
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSlotPicker, { once: true });
+} else {
+    initSlotPicker();
+}

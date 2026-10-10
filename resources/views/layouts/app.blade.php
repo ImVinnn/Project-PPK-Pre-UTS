@@ -22,6 +22,7 @@
 
     {{-- Sistem Desain Fotel --}}
     <link rel="stylesheet" href="{{ asset('css/theme.css') }}">
+    <style>html.ajax-loading #main-content { opacity: .65; cursor: progress; }</style>
 </head>
 <body>
     {{-- Header Bersih Bergaya Fotel --}}
@@ -177,6 +178,7 @@
     <main id="main-content" class="fotel-page-transition">
         @yield('content')
     </main>
+    <div id="ajax-status" class="visually-hidden" role="status" aria-live="polite"></div>
 
     {{-- Footer Hitam Arang Bergaya Fotel --}}
     <footer class="fotel-footer">
@@ -247,5 +249,6 @@
     {{-- Bootstrap JS Bundle --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/motion.js') }}" defer></script>
+    <script src="{{ asset('js/ajax-interactions.js') }}" defer></script>
 </body>
 </html>

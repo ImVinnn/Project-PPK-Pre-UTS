@@ -341,12 +341,12 @@
 
 <script>
     // Buka kembali modal yang relevan kalau validasi server gagal (ada error 'reason').
-    document.addEventListener('DOMContentLoaded', function () {
+    (function () {
         @if ($errors->has('reason') && $reservation->status === 'pending')
             new bootstrap.Modal(document.getElementById('rejectModal')).show();
         @elseif ($errors->has('reason') && $reservation->status === 'approved')
             new bootstrap.Modal(document.getElementById('cancelModal')).show();
         @endif
-    });
+    })();
 </script>
 @endsection

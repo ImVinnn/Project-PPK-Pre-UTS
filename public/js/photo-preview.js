@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+function initPhotoPreview() {
     const photoInput = document.getElementById('photo-input');
     const photoPreview = document.getElementById('photo-preview');
     const previewContainer = document.getElementById('preview-container');
@@ -18,10 +18,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 // 2. Cek Format/Tipe File
-                const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
                 const allowedTypes = ['image/jpeg', 'image/png'];
                 if (!allowedTypes.includes(file.type)) {
-                    alert('Format berkas tidak didukung! Gunakan format JPG, PNG, atau WEBP.');
                     alert('Format berkas tidak didukung! Gunakan format JPG, JPEG, atau PNG.');
                     photoInput.value = ''; // Reset pilihan berkas
                     previewContainer.classList.add('d-none');
@@ -41,4 +39,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPhotoPreview, { once: true });
+} else {
+    initPhotoPreview();
+}

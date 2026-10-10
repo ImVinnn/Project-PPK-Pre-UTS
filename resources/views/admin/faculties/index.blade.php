@@ -10,7 +10,10 @@
             <h1 class="font-serif fw-semibold mb-1">Fakultas</h1>
             <p class="text-secondary mb-0">Kelola fakultas yang digunakan oleh gedung dan fasilitas kampus.</p>
         </div>
-        <a href="{{ route('admin.faculties.create') }}" class="btn btn-primary">Tambah Fakultas</a>
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary" data-ajax-refresh>Perbarui Data</button>
+            <a href="{{ route('admin.faculties.create') }}" class="btn btn-primary">Tambah Fakultas</a>
+        </div>
     </div>
 
     @if (session('success'))

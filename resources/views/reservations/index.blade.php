@@ -25,9 +25,12 @@
             </p>
         </div>
         <div>
-            <a href="{{ route('reservations.create') }}" class="btn-fotel-gold">
-                + Ajukan Reservasi Baru
-            </a>
+            <div class="d-flex gap-2">
+                <button type="button" class="btn-fotel-secondary" data-ajax-refresh>Perbarui Riwayat</button>
+                <a href="{{ route('reservations.create') }}" class="btn-fotel-gold">
+                    + Ajukan Reservasi Baru
+                </a>
+            </div>
         </div>
     </div>
 
