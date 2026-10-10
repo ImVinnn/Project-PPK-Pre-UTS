@@ -61,15 +61,17 @@
         </div>
     @endif
 
-    @if ($errors->any())
-        <div class="alert alert-danger mb-4">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    @php
+        $facilityInactive = $report->facility?->status === \App\Support\Status::FACILITY_INACTIVE;
+        $statusOptions = [
+            'baru' => 'Baru (Menunggu Tindak Lanjut)',
+            'diproses' => 'Diproses (Sedang Ditangani)',
+            'selesai' => 'Selesai (Kerusakan Teratasi)',
+            'ditolak' => 'Ditolak (Tidak Valid / Dibatalkan)',
+        ];
+        $allowedStatuses = \App\Http\Requests\Officer\UpdateReportStatusRequest::TRANSITIONS[$report->status] ?? [];
+        $reportIsFinal = $allowedStatuses === [];
+    @endphp
 
     <div class="row g-4">
         <!-- Kolom Kiri: Detail Laporan, Foto Bukti, & Reservasi Terdampak -->
@@ -97,7 +99,7 @@
                             </tr>
                             <tr>
                                 <td class="detail-label">Tanggal Masuk</td>
-                                <td>{{ $report->created_at->format('d M Y, H:i') }} WIB</td>
+                                <td>{{ $report->created_at->translatedFormat('d M Y, H:i') }} WIB</td>
                             </tr>
                             <tr>
                                 <td class="detail-label">Kategori</td>
@@ -171,7 +173,7 @@
                                                 <small class="text-muted">{{ $reservation->purpose }}</small>
                                             </td>
                                             <td class="small">
-                                                <div>{{ $reservation->start_time->format('d M Y') }}</div>
+                                                <div>{{ $reservation->start_time->translatedFormat('d M Y') }}</div>
                                                 <div class="text-muted">{{ $reservation->start_time->format('H:i') }} - {{ $reservation->end_time->format('H:i') }} WIB</div>
                                             </td>
                                             <td><span class="badge bg-info text-dark">{{ $reservation->quantity ?? 1 }} unit/slot</span></td>
@@ -211,17 +213,31 @@
                             @csrf
                             @method('PATCH')
 
+                            @if ($facilityInactive)
+                                <div class="alert alert-warning small" role="alert">
+                                    Fasilitas nonaktif hanya bisa diubah oleh admin. Petugas tidak dapat mengubah kondisinya dari laporan ini.
+                                </div>
+                            @endif
+
                             <!-- Status Fasilitas (Active / Maintenance) -->
                             <div class="mb-3">
                                 <label for="facility_status" class="form-label fw-semibold">Status Operasional Fasilitas</label>
-                                <select class="form-select" id="facility_status" name="facility_status" required>
-                                    <option value="{{ \App\Support\Status::FACILITY_ACTIVE }}" @selected($report->facility->status === \App\Support\Status::FACILITY_ACTIVE)>
-                                        🟢 Aktif / Siap Digunakan
-                                    </option>
-                                    <option value="{{ \App\Support\Status::FACILITY_MAINTENANCE }}" @selected($report->facility->status === \App\Support\Status::FACILITY_MAINTENANCE)>
-                                        🔴 Maintenance / Dalam Perbaikan
-                                    </option>
+                                <select class="form-select @error('facility_status') is-invalid @enderror" id="facility_status" name="facility_status" required @disabled($facilityInactive)>
+                                    @if ($facilityInactive)
+                                        <option value="" selected>Dikelola admin</option>
+                                    @else
+                                        @php($selectedFacilityStatus = old('facility_status', $report->facility->status))
+                                        <option value="{{ \App\Support\Status::FACILITY_ACTIVE }}" @selected($selectedFacilityStatus === \App\Support\Status::FACILITY_ACTIVE)>
+                                            🟢 Aktif / Siap Digunakan
+                                        </option>
+                                        <option value="{{ \App\Support\Status::FACILITY_MAINTENANCE }}" @selected($selectedFacilityStatus === \App\Support\Status::FACILITY_MAINTENANCE)>
+                                            🔴 Maintenance / Dalam Perbaikan
+                                        </option>
+                                    @endif
                                 </select>
+                                @error('facility_status')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <!-- Stok Alat Rusak/Unavailable (Hanya jika tipe Alat/Equipment) -->
@@ -232,19 +248,23 @@
                                     </label>
                                     <div class="input-group">
                                         <input type="number"
-                                               class="form-control"
+                                               class="form-control @error('stock_unavailable') is-invalid @enderror"
                                                id="stock_unavailable"
                                                name="stock_unavailable"
                                                min="0"
                                                max="{{ $report->facility->equipmentDetail->stock_total }}"
-                                               value="{{ old('stock_unavailable', $report->facility->equipmentDetail->stock_unavailable) }}">
+                                               value="{{ old('stock_unavailable', $report->facility->equipmentDetail->stock_unavailable) }}"
+                                               @disabled($facilityInactive)>
                                         <span class="input-group-text">/ {{ $report->facility->equipmentDetail->stock_total }} Unit</span>
+                                        @error('stock_unavailable')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <small class="text-muted d-block mt-1">Masukkan jumlah alat yang mengalami kerusakan.</small>
                                 </div>
                             @endif
 
-                            <button type="submit" class="btn btn-outline-dark btn-sm w-100 fw-semibold py-2">
+                            <button type="submit" class="btn btn-outline-dark btn-sm w-100 fw-semibold py-2" @disabled($facilityInactive)>
                                 Update Kondisi Fasilitas
                             </button>
                         </form>
@@ -259,26 +279,36 @@
                 </div>
                 <div class="card-body p-4">
 
+                    @if ($reportIsFinal)
+                        <div class="text-center mb-3">
+                            <span class="badge {{ $report->statusBadge() }} fs-6 mb-2">{{ $report->statusLabel() }}</span>
+                            <h6 class="fw-semibold mb-1">Laporan Berstatus Final</h6>
+                            <p class="small text-muted mb-0">Laporan yang sudah selesai atau ditolak tidak dapat diubah lagi.</p>
+                        </div>
+                        <div class="small fw-semibold mb-1">Catatan Resolusi</div>
+                        <div class="p-2 bg-light border rounded small mb-3">{{ $report->resolution_note }}</div>
+                        @error('status')
+                            <div class="alert alert-danger small mb-3" role="alert">{{ $message }}</div>
+                        @enderror
+                        <a href="{{ route('officer.reports.index') }}" class="btn btn-outline-secondary w-100">
+                            Kembali ke Antrean
+                        </a>
+                    @else
                     <form action="{{ route('officer.reports.status.update', $report) }}" method="POST">
                         @csrf
                         @method('PATCH')
 
-                        <!-- Pilih Status Baru -->
+                        <!-- Pilih Status Baru (hanya transisi yang sah) -->
                         <div class="mb-3">
                             <label for="status" class="form-label fw-semibold">Perbarui Status Laporan</label>
                             <select class="form-select @error('status') is-invalid @enderror" id="status" name="status" required>
-                                <option value="baru" @selected(old('status', $report->status) === 'baru')>
-                                    Baru (Menunggu Tindak Lanjut)
-                                </option>
-                                <option value="diproses" @selected(old('status', $report->status) === 'diproses')>
-                                    Diproses (Sedang Ditangani)
-                                </option>
-                                <option value="selesai" @selected(old('status', $report->status) === 'selesai')>
-                                    Selesai (Kerusakan Teratasi)
-                                </option>
-                                <option value="ditolak" @selected(old('status', $report->status) === 'ditolak')>
-                                    Ditolak (Tidak Valid / Dibatalkan)
-                                </option>
+                                @foreach ($statusOptions as $value => $label)
+                                    @if (in_array($value, $allowedStatuses, true))
+                                        <option value="{{ $value }}" @selected(old('status', $report->status) === $value)>
+                                            {{ $label }}
+                                        </option>
+                                    @endif
+                                @endforeach
                             </select>
                             @error('status')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -313,6 +343,7 @@
                             </a>
                         </div>
                     </form>
+                    @endif
 
                 </div>
             </div>
@@ -323,6 +354,7 @@
 <script>
     (function () {
         const statusSelect = document.getElementById('status');
+        if (!statusSelect) return; // laporan final: tidak ada formulir status
         const resolutionStar = document.getElementById('resolution-required-star');
         const resolutionHint = document.getElementById('resolution-hint');
         const resolutionTextarea = document.getElementById('resolution_note');

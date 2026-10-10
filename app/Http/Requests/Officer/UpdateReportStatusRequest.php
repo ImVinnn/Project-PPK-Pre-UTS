@@ -9,6 +9,17 @@ use Illuminate\Validation\Rule;
 class UpdateReportStatusRequest extends FormRequest
 {
     /**
+     * Transisi sah per status sekarang. Status sama hanya untuk memperbarui catatan;
+     * selesai dan ditolak adalah status final.
+     */
+    public const array TRANSITIONS = [
+        Status::REPORT_NEW => [Status::REPORT_NEW, Status::REPORT_IN_PROGRESS, Status::REPORT_REJECTED],
+        Status::REPORT_IN_PROGRESS => [Status::REPORT_IN_PROGRESS, Status::REPORT_COMPLETED, Status::REPORT_REJECTED],
+        Status::REPORT_COMPLETED => [],
+        Status::REPORT_REJECTED => [],
+    ];
+
+    /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
@@ -32,6 +43,33 @@ class UpdateReportStatusRequest extends FormRequest
                 'max:1000',
             ],
         ];
+    }
+
+    /**
+     * Aturan transisi status, dibaca dari status laporan di database.
+     */
+    public function withValidator($validator): void
+    {
+        $validator->after(function ($validator) {
+            if ($validator->errors()->has('status')) {
+                return;
+            }
+
+            $current = $this->route('report')->status;
+            $requested = $this->input('status');
+
+            if (self::TRANSITIONS[$current] === []) {
+                $validator->errors()->add(
+                    'status',
+                    'Laporan berstatus final ('.$current.') dan tidak dapat diubah lagi.'
+                );
+            } elseif (! in_array($requested, self::TRANSITIONS[$current], true)) {
+                $validator->errors()->add(
+                    'status',
+                    'Status laporan tidak dapat diubah dari "'.$current.'" ke "'.$requested.'".'
+                );
+            }
+        });
     }
 
     /**
