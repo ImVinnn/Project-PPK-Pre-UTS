@@ -122,7 +122,7 @@
                                 <tr>
                                     <td class="ps-4">{{ $loop->iteration }}</td>
                                     <td>
-                                        <span class="small fw-semibold">{{ $report->created_at->format('d M Y') }}</span>
+                                        <span class="small fw-semibold">{{ $report->created_at->translatedFormat('d M Y') }}</span>
                                         <br>
                                         <small class="text-muted">{{ $report->created_at->format('H:i') }} WIB</small>
                                     </td>

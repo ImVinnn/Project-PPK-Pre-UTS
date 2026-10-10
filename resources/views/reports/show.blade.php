@@ -61,7 +61,7 @@
                             </tr>
                             <tr>
                                 <td class="detail-label">Tanggal Laporan</td>
-                                <td>{{ $report->created_at->format('d M Y, H:i') }} WIB</td>
+                                <td>{{ $report->created_at->translatedFormat('d M Y, H:i') }} WIB</td>
                             </tr>
                             <tr>
                                 <td class="detail-label">Status</td>

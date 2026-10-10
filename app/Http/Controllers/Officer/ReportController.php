@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Officer;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Officer\UpdateFacilityConditionRequest;
 use App\Http\Requests\Officer\UpdateReportStatusRequest;
 use App\Models\DamageReport;
 use App\Support\Status;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class ReportController extends Controller
@@ -76,32 +78,22 @@ class ReportController extends Controller
     /**
      * US12 Tambahan — Perbarui status kondisi fasilitas (active / maintenance) & stock_unavailable.
      */
-    public function updateFacilityCondition(Request $request, DamageReport $report): RedirectResponse
+    public function updateFacilityCondition(UpdateFacilityConditionRequest $request, DamageReport $report): RedirectResponse
     {
+        // Semua aturan (status, fasilitas nonaktif, stok) sudah divalidasi di Form Request.
+        $validated = $request->validated();
         $facility = $report->facility;
 
-        if (!$facility) {
-            return back()->with('error', 'Fasilitas tidak ditemukan.');
-        }
+        DB::transaction(function () use ($facility, $validated): void {
+            $facility->status = $validated['facility_status'];
+            $facility->save();
 
-        $validated = $request->validate([
-            'facility_status'   => 'required|string',
-            'stock_unavailable' => 'nullable|integer|min:0',
-        ]);
-
-        // 1. Update status fasilitas (misal: active / maintenance)
-        $facility->status = $validated['facility_status'];
-        $facility->save();
-
-        // 2. Jika fasilitas berupa Alat, update stock_unavailable
-        if ($facility->isEquipment() && $facility->equipmentDetail) {
-            $maxStock = $facility->equipmentDetail->stock_total;
-            $unavailable = min((int) ($validated['stock_unavailable'] ?? 0), $maxStock);
-
-            $facility->equipmentDetail->update([
-                'stock_unavailable' => $unavailable,
-            ]);
-        }
+            if (isset($validated['stock_unavailable'])) {
+                $facility->equipmentDetail->update([
+                    'stock_unavailable' => (int) $validated['stock_unavailable'],
+                ]);
+            }
+        });
 
         return redirect()
             ->route('officer.reports.show', $report)

@@ -69,7 +69,7 @@
                                         @endif
                                     </td>
                                     <td class="text-secondary">{{ Str::limit($report->description, 50) }}</td>
-                                    <td class="font-mono small">{{ $report->created_at->format('d M Y') }}</td>
+                                    <td class="font-mono small">{{ $report->created_at->translatedFormat('d M Y') }}</td>
                                     <td><span class="badge {{ $report->statusBadge() }}">{{ $report->statusLabel() }}</span></td>
                                     <td class="text-muted small">
                                         @if ($report->resolution_note)
