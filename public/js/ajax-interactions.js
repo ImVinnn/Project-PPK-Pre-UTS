@@ -61,7 +61,14 @@
         }
     }
 
-    async function render(response, historyMode) {
+    const PRESERVE_SELECTOR = '[data-ajax-scroll="preserve"]';
+
+    // 'preserve' keeps the scroll position; anything else scrolls to the top.
+    function scrollModeFor(...elements) {
+        return elements.some((el) => el && el.closest && el.closest(PRESERVE_SELECTOR)) ? 'preserve' : 'top';
+    }
+
+    async function render(response, historyMode, scrollMode = 'top') {
         const contentType = response.headers.get('Content-Type') || '';
         if (!response.ok || !contentType.includes('text/html')) {
             throw new Error('Server tidak mengembalikan halaman yang dapat ditampilkan.');
@@ -89,7 +96,15 @@
         document.body.style.removeProperty('overflow');
         document.body.style.removeProperty('padding-right');
 
+        const savedScroll = scrollMode === 'preserve'
+            ? { left: window.scrollX || 0, top: window.scrollY || 0 }
+            : null;
+
         main.innerHTML = newMain.innerHTML;
+        // Skip the staggered entrance when the position is kept, so content does not jump.
+        if (savedScroll) {
+            main.querySelectorAll('.fotel-reveal').forEach((el) => el.classList.add('is-revealed'));
+        }
         const newHeader = documentFromServer.querySelector('header.fotel-header');
         const header = document.querySelector('header.fotel-header');
         if (newHeader && header) header.innerHTML = newHeader.innerHTML;
@@ -105,12 +120,14 @@
 
         await runPageScripts();
         document.dispatchEvent(new Event('sora:page-updated'));
-        if (changedLocation && historyMode === 'push') {
+        if (savedScroll) {
+            window.scrollTo({ ...savedScroll, behavior: 'instant' });
+        } else if (historyMode === 'push') {
             window.scrollTo({ top: 0, behavior: 'auto' });
         }
     }
 
-    async function navigate(url, historyMode = 'push') {
+    async function navigate(url, historyMode = 'push', scrollMode = 'top') {
         if (mutationPending) return;
         if (navigationController) navigationController.abort();
         const controller = new AbortController();
@@ -125,7 +142,7 @@
                 signal: controller.signal,
             });
             if (navigationController !== controller) return;
-            await render(response, historyMode);
+            await render(response, historyMode, scrollMode);
         } catch (error) {
             if (error.name !== 'AbortError') {
                 showError('Gagal memuat data. Periksa koneksi lalu coba lagi.');
@@ -144,9 +161,14 @@
         const data = submitter ? new FormData(form, submitter) : new FormData(form);
         const url = new URL(form.action, window.location.href);
 
+        const explicit = scrollModeFor(form, submitter);
+
         if (method === 'GET') {
             url.search = new URLSearchParams(data).toString();
-            await navigate(url.href);
+            // Same page, only the query changes (filters): keep the position.
+            const current = new URL(window.location.href);
+            const samePage = url.origin === current.origin && url.pathname === current.pathname;
+            await navigate(url.href, 'push', explicit === 'preserve' || samePage ? 'preserve' : 'top');
             return;
         }
 
@@ -160,7 +182,7 @@
                 credentials: 'same-origin',
                 headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'text/html' },
             });
-            await render(response, 'push');
+            await render(response, 'push', explicit);
         } catch (error) {
             // Never repeat a POST automatically: the server may already have saved it.
             showError('Hasil tindakan belum dapat dipastikan. Periksa data sebelum mencoba lagi.');
@@ -175,7 +197,7 @@
         const refresh = event.target.closest('[data-ajax-refresh]');
         if (refresh && main.contains(refresh)) {
             event.preventDefault();
-            navigate(window.location.href, 'none');
+            navigate(window.location.href, 'none', 'preserve');
             return;
         }
 
@@ -193,7 +215,7 @@
                 destination.search === window.location.search && destination.hash)) return;
 
         event.preventDefault();
-        navigate(destination.href);
+        navigate(destination.href, 'push', scrollModeFor(link));
     }, true);
 
     document.addEventListener('submit', (event) => {
@@ -209,6 +231,6 @@
     window.addEventListener('popstate', () => navigate(window.location.href, 'none'));
     window.SoraAjax = {
         navigate,
-        refresh: () => navigate(window.location.href, 'none'),
+        refresh: () => navigate(window.location.href, 'none', 'preserve'),
     };
 })();
