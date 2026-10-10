@@ -19,7 +19,7 @@ Fasilitas yang dikelola mencakup ruang kelas, aula, laboratorium, lapangan, dan 
 ## Kontributor
 
 | Nama | NIM | Profil GitHub |
-|---|---|---|---|
+|---|---|---|
 | Haydar Rafi' Sultansyah | 24060124120023 | [HydraFish](https://github.com/HydraFish) |
 | Syair Adharian | 24060124140172 | [szqiel](https://github.com/szqiel) |
 | Marco Falias Pangkado | 24060124130112 | [Moco1206](https://github.com/Moco1206) |
