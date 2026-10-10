@@ -8,14 +8,10 @@
         <div class="col-md-6 col-lg-5">
             <div class="p-4 p-md-5 bg-white border rounded">
                 <div class="text-center mb-4">
-                    <div class="fotel-logo-icon mx-auto mb-2" aria-hidden="true">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                    <h1 class="fs-4 fw-bold text-dark mb-1 tracking-tight">Daftar Akun</h1>
-                    <p class="small text-muted mb-0">Akun baru perlu diaktifkan admin sebelum dapat digunakan.</p>
+                    <img src="{{ asset('images/brand/sora-icon.png') }}" alt="SORA" class="fotel-brand-icon fotel-brand-icon-lg mb-2">
+                    <div class="fotel-brand-text fs-3 lh-1">SORA</div>
+                    <div class="small text-muted mb-3">Sistem Operasional Reservasi dan Aduan Fasilitas Kampus</div>
+                    <h1 class="fs-4 fw-bold text-dark mb-0 tracking-tight">Daftar Akun</h1>
                 </div>
 
                 <form method="POST" action="{{ route('register.store') }}">
