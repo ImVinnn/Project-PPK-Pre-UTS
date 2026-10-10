@@ -10,7 +10,10 @@
             <h1 class="font-serif fw-semibold mb-1">Kelola Akun</h1>
             <p class="text-secondary mb-0">Verifikasi pendaftar dan kelola status akun tanpa menghapus riwayat.</p>
         </div>
-        <a href="{{ route('admin.accounts.create') }}" class="btn btn-primary">Tambah Akun Aktif</a>
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary" data-ajax-refresh>Perbarui Data</button>
+            <a href="{{ route('admin.accounts.create') }}" class="btn btn-primary">Tambah Akun Aktif</a>
+        </div>
     </div>
 
     @if (session('success'))

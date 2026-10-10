@@ -21,6 +21,7 @@
             <p class="text-secondary small mb-0">Ringkasan verifikasi akun dan kondisi data master fasilitas.</p>
         </div>
         <div class="d-flex gap-2">
+            <button type="button" class="btn-fotel-secondary py-1 px-3" data-ajax-refresh>Perbarui Data</button>
             <a href="{{ route('admin.accounts.index') }}" class="btn-fotel-secondary py-1 px-3">
                 Kelola Akun
             </a>

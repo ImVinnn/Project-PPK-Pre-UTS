@@ -129,7 +129,7 @@
                  id="pane-{{ $type }}" role="tabpanel" aria-labelledby="tab-{{ $type }}" tabindex="0">
                 <div class="p-3 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 border-bottom">
                     <p class="small text-secondary mb-0">{{ $tab['note'] }}</p>
-                    <a href="{{ route('admin.recaps.export', ['type' => $type] + $query) }}"
+                    <a href="{{ route('admin.recaps.export', ['type' => $type] + $query) }}" data-no-ajax
                        class="btn-fotel-secondary py-1 px-3 text-nowrap text-decoration-none" download>
                         Unduh CSV {{ $tab['label'] }}
                     </a>
