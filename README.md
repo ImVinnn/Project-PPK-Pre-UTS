@@ -1,191 +1,154 @@
-# Sistem Reservasi dan Pelaporan Fasilitas Kampus
+<p align="center">
+  <img src="public/images/brand/sora-icon.png" alt="SORA" width="96">
+</p>
 
-Project PPK 2026 — Pra UTS · **Deadline: 11 Oktober 2026, 12.00 WIB via Kulon**
+<h1 align="center">SORA</h1>
 
-> **PRD v1.0 adalah sumber kebutuhan.** README ini tata cara kerja harian dan kontrak
-> untuk AI. Jika keduanya bertentangan, PRD yang menang — laporkan konfliknya, jangan
-> ubah aturan diam-diam.
-
-Aplikasi web untuk mencari fasilitas kampus, mengajukan reservasi, melaporkan kerusakan, memproses antrean petugas, mengelola data master, dan membuat rekap. Satu sumber data agar ketersediaan reservasi ikut mempertimbangkan status fasilitas dan stok alat.
-
----
-
-## Untuk AI Agent — baca dulu
-
-**Sebelum menulis kode:**
-1. Tanyakan domain pengguna (P1/P2/P3/P4) jika belum disebutkan
-2. Baca migration, model, dan `app/Support/Status.php` yang sudah ada — jangan menebak skema
-3. Kerjakan hanya file milik domain tersebut
-4. Tentukan acceptance case dari PRD untuk fitur yang dikerjakan
-5. Satu fitur per sesi
-
-**Jangan pernah:**
-- Menambah tabel, kolom, status, atau package tanpa alasan dan persetujuan tim
-- Menulis kode untuk domain milik anggota lain
-- Menyebar magic string — semua role, status, type, kategori, dan batas durasi ada di `Status.php`
-- Memakai React, Vue, Inertia, Livewire, npm/build step, Breeze, Jetstream, localStorage, sessionStorage
-- Membuat satu baris reservasi per slot 30 menit — satu rentang tetap satu baris
-- Membuat paket tempat+alat otomatis — keduanya reservasi terpisah
-- Mengandalkan tombol tersembunyi sebagai kontrol akses
-- Mengambil `status`, `processed_by`, atau `cancelled_by` langsung dari request
-
-**Selalu:**
-- Validasi di server melalui Form Request; validasi client hanya membantu UX
-- Periksa role, `account_status`, dan ownership
-- Batasi kolom dari server untuk respons publik — bukan disembunyikan dengan CSS
-- Bungkus aturan lintas baris dalam transaksi
-- Setelah selesai, jelaskan file yang berubah, alur, query/transaction, aturan yang diterapkan, dan cara mengujinya
-
-**Tanyakan hanya jika ada konflik nyata** yang mengubah hasil. Keputusan final di PRD tidak perlu dikonfirmasi ulang.
+<p align="center">
+  <strong>Sistem Operasional Reservasi dan Aduan Fasilitas Kampus</strong>
+</p>
 
 ---
 
-## 1. Stack
+**SORA** adalah aplikasi web terpusat untuk memesan fasilitas kampus sekaligus melaporkan kerusakannya. Pengunjung dapat melihat fasilitas dan ketersediaan slot waktunya, pengguna dapat mengajukan reservasi dan melaporkan masalah, sementara petugas dan admin memproses kedua alur itu dalam satu sistem — dari pengajuan sampai penanganan.
 
-| Lapisan | Pilihan |
-|---|---|
-| Framework | Laravel (PHP 8.2+) |
-| Database | MySQL/MariaDB, engine InnoDB |
-| View | Blade + Bootstrap 5 CDN, UI bahasa Indonesia |
-| Client | Vanilla JS + HTML5 |
-| Auth | Session + `Hash::make`, tanpa Breeze/Jetstream |
-| Otorisasi | Middleware role + policy/ownership |
-| Validasi | Form Request + domain service |
-| Upload | Storage facade — 1 foto, JPG/JPEG/PNG, maks 2 MB |
-| Scheduler | Laravel Scheduler — auto-reject pending kedaluwarsa |
-| Ekspor | CSV native + Maatwebsite Laravel Excel |
-| Server lokal | Laragon/XAMPP, document root ke `public` |
+Fasilitas yang dikelola mencakup ruang kelas, aula, laboratorium, lapangan, dan alat.
 
-`APP_TIMEZONE=Asia/Jakarta`. Semua perbandingan dan tampilan memakai WIB.
+> Proyek ini dikembangkan untuk memenuhi tugas **Project PPK 2026 — Web Platform Pra-UTS**.
 
-**Komponen yang disarankan:** `ReservationAvailabilityService` (overlap, stok, slot publik, durasi, rangkaian), `ReservationApprovalService` (transaksi, lock, recheck), `RecapService` (satu ruleset untuk halaman, CSV, XLSX), Console Command (auto-reject).
+## Kontributor
 
----
-
-## 2. Pembagian tugas
-
-| Kode | Domain | US | Tanggung jawab |
+| Nama | NIM | Profil GitHub |
 |---|---|---|---|
-| **P1** | Account & Access + Master Data | auth, 13–15 | **Semua migration + seeder**, `Status.php`, `AuthController`, `Admin/AccountController`, middleware, model `User`, layout & navbar, kelola akun, kelola fakultas/gedung |
-| **P2** | Facility & User Reservation | 1–5 | Model `Facility` & `Reservation`, `ReservationAvailabilityService`, `FacilityController`, `ReservationController`, halaman katalog & reservasi pengguna |
-| **P3** | Issue & Maintenance | 6, 7, 11, 12 | Model `DamageReport`, `DamageReportController`, `Officer/ReportController`, upload foto, maintenance fasilitas, halaman laporan |
-| **P4** | Reservation Ops & Reporting | 8–10, 16, 17 | `ReservationApprovalService`, dashboard petugas, `Admin/FacilityController`, `RecapService`, ekspor CSV/XLSX |
+| Haydar Rafi' Sultansyah | 24060124120023 | [HydraFish](https://github.com/HydraFish) |
+| Syair Adharian | 24060124140172 | [szqiel](https://github.com/szqiel) |
+| Marco Falias Pangkado | 24060124130112 | [Moco1206](https://github.com/Moco1206) |
+| Banyuputra | 24060124140193 | [ImVinnn](https://github.com/ImVinnn) |
 
-**Perubahan dari PRD bagian 16:** seluruh migration dipegang P1 (bukan tersebar), dan CRUD fakultas/gedung pindah dari P4 ke P1. Model tetap milik domain masing-masing — migration hanya struktur tabel.
+## Teknologi yang Digunakan
 
-**File bersama:**
+- **Bahasa pemrograman:** PHP 8.2+
+- **Framework:** Laravel dengan arsitektur MVC
+- **Template engine:** Blade (server-side rendering)
+- **Basis data:** MySQL / MariaDB
+- **ORM dan migrasi:** Eloquent dan Laravel Migration
+- **Autentikasi:** Session Laravel dengan hash bcrypt
+- **Frontend:** HTML, CSS, JavaScript murni, dan Bootstrap 5 melalui CDN
+- **Interaksi:** AJAX berbasis `fetch` tanpa build step
+- **Pengujian:** PHPUnit dan Node test runner
 
-| File | Pemilik |
+Tidak ada npm atau build step — aplikasi berjalan cukup dengan PHP, Composer, dan MySQL.
+
+## Fitur Aplikasi
+
+### Autentikasi dan Akun
+
+- Registrasi mandiri untuk pengguna, dengan akun menunggu verifikasi admin.
+- Login dan logout dengan sesi; hanya akun aktif yang dapat masuk.
+- Admin mendaftarkan akun petugas dan pengguna secara langsung.
+- Admin memverifikasi atau menolak akun hasil registrasi mandiri.
+- Petugas tidak dapat mendaftar sendiri dalam kondisi apa pun.
+- Hak akses berdasarkan peran: pengunjung, pengguna, petugas, dan admin.
+
+### Fasilitas dan Ketersediaan
+
+- Daftar fasilitas beserta ketersediaan per slot 30 menit.
+- Pencarian berdasarkan tipe, lokasi, dan kapasitas.
+- Detail pemohon dan tujuan penggunaan tidak pernah dikirim ke halaman publik.
+- Stok alat dikelola sebagai jumlah unit, termasuk unit yang sedang rusak.
+- Admin menambah, mengubah, menonaktifkan, dan mengaktifkan kembali fasilitas.
+
+### Reservasi
+
+- Pengajuan reservasi pada rentang slot berurutan dengan tujuan penggunaan.
+- Validasi di sisi server dan client untuk jam operasional, kelipatan 30 menit, dan batas durasi.
+- Persetujuan dan penolakan oleh petugas, dengan pengecekan bentrok jadwal di dalam transaksi database.
+- Pembatalan oleh pengguna sebelum batas waktu, dan pembatalan darurat oleh petugas dengan alasan.
+- Riwayat, detail, dan status reservasi milik pengguna.
+
+### Pelaporan Kerusakan dan Kondisi Fasilitas
+
+- Laporan kerusakan dengan kategori, deskripsi, dan foto.
+- Pemantauan status laporan milik sendiri.
+- Petugas memproses laporan: baru, diproses, selesai, atau ditolak, dengan catatan resolusi.
+- Laporan yang sudah selesai atau ditolak terkunci dan tidak dapat diubah.
+- Petugas menandai fasilitas dalam perbaikan dan mengembalikannya ke aktif.
+- Daftar reservasi yang terdampak ditampilkan saat fasilitas masuk perbaikan.
+
+### Dashboard, Rekap, dan Ekspor
+
+- Dashboard antrean reservasi dan laporan untuk petugas.
+- Dashboard ringkasan akun dan fasilitas untuk admin.
+- Rekap okupansi tempat, pemakaian alat, dan frekuensi laporan kerusakan.
+- Filter rekap berdasarkan periode, fakultas, dan gedung.
+- Ekspor rekap dalam format CSV.
+
+## Peran Pengguna
+
+| Peran | Akses utama |
 |---|---|
-| `routes/web.php` | P1 |
-| `resources/views/layouts/app.blade.php` | P1 |
-| `app/Support/Status.php` | P1 |
-| Semua migration & seeder | P1 |
-| Model & service `Facility`/`Reservation` | P2 (P3/P4 review integrasi) |
+| Pengunjung | Melihat fasilitas dan ketersediaan slot tanpa login. |
+| Pengguna | Mengajukan dan membatalkan reservasi sendiri, membuat laporan kerusakan, serta melihat riwayat dan statusnya. |
+| Petugas | Memproses reservasi dan laporan, membatalkan reservasi darurat, dan mengelola kondisi fasilitas. |
+| Admin | Mengelola akun, fakultas, gedung, dan fasilitas, serta melihat dan mengekspor rekap. |
 
-**Butuh kolom baru?** Lapor ke P1. Jangan mengedit migration yang sudah dijalankan orang lain.
+## Aturan Reservasi
 
----
+- Jam operasional **07.00–20.00 WIB** dengan slot tetap **30 menit**.
+- Waktu mulai dan selesai harus kelipatan 30 menit pada tanggal yang sama.
+- Setiap jenis fasilitas memiliki batas durasi maksimal; reservasi bersambung milik pengguna yang sama dihitung sebagai satu rangkaian.
+- Reservasi yang masih menunggu tidak mengunci slot. Bentrok dicegah saat petugas menyetujui.
+- Pembatalan mandiri paling lambat **2 jam** sebelum waktu mulai.
+- Fasilitas dalam perbaikan atau nonaktif tidak menerima pengajuan maupun persetujuan baru.
 
-## 3. Aturan bisnis kritis
+## Arsitektur
 
-Lengkapnya di PRD bagian 7. Ini yang paling sering keliru.
+Aplikasi menerapkan pola **MVC** Laravel dengan pemisahan tanggung jawab berikut:
 
-### Waktu dan durasi
+- **Route dan Middleware** — menentukan alamat halaman dan membatasi akses per peran.
+- **Controller** — menerima permintaan dan mengatur alur.
+- **Form Request** — memvalidasi seluruh input di sisi server.
+- **Service** — menjalankan aturan bisnis lintas tabel, seperti ketersediaan slot, persetujuan reservasi, dan rekap.
+- **Model** — mengakses data melalui Eloquent.
+- **View** — menghasilkan halaman HTML dengan Blade.
+- **Konfigurasi** — koneksi basis data diatur di `config/database.php` dan `.env`, terpisah dari logika dan tampilan.
 
-- Jam penggunaan **07.00–20.00**, kelipatan 30 menit, `end_time > start_time`
-- Mulai dan selesai **tanggal yang sama** — tidak ada reservasi lintas hari
-- Maksimal **90 hari** ke depan, harus di masa depan
-- **Tidak ada minimum lead time** — pukul 09.27 masih boleh memilih mulai 09.30
-- Satu rentang multi-slot = **satu baris**, jumlah slot dihitung bukan disimpan
+## Struktur Folder Proyek
 
-| Type | Maksimum | Slot |
-|---|---|---|
-| `ruang_kelas` | 180 menit | 6 |
-| `aula` | 360 menit | 12 |
-| `laboratorium` | 240 menit | 8 |
-| `lapangan` | 120 menit | 4 |
-| `alat` | 780 menit | 26 |
-
-Reservasi bersebelahan untuk user+facility sama dihitung **kumulatif** terhadap batas durasi. Jeda memulai rangkaian baru. Rejected/cancelled tidak dihitung.
-
-### Ketersediaan
-
-Overlap = `start_baru < end_lama` AND `end_baru > start_lama`. Rentang 09.00–10.00 dan 10.00–11.00 **tidak** bertumpuk.
-
-| Objek | Aturan |
-|---|---|
-| Tempat | Eksklusif. Tidak boleh ada approved overlap pada facility sama. Satu pengguna juga tidak boleh punya dua tempat approved yang overlap |
-| Alat | Pooled stock. Tersedia = `stock_total − stock_unavailable − Σ quantity approved overlap` |
-| Pending | **Tidak memblokir** slot/stok publik. Banyak pending boleh bersaing |
-| Tempat + alat | Boleh waktu sama, disimpan terpisah, partial approval disengaja |
-| Status fasilitas | Hanya `active` menerima pengajuan/approve |
-
-### Approve wajib atomik
-
-1. Buka transaksi
-2. Lock `users.id` pemohon, lalu `facilities.id`, lalu `equipment_details` untuk alat — **urutan lock konsisten**
-3. Baca ulang: reservasi target, status fasilitas, approved overlap, konflik tempat milik pemohon, stok alat
-4. Jika aman → `approved` + isi `processed_by` dan `processed_at`. Jika tidak → jangan approve
-5. Commit
-
-Jangan mengandalkan pengecekan sebelum transaksi.
-
-### Pembatalan dan kedaluwarsa
-
-| Kondisi | Aturan |
-|---|---|
-| Pending oleh pengguna | Kapan saja selama `now < start_time` |
-| Approved oleh pengguna | `now ≤ start_time − 2 jam`. Mulai 08.00 → batas 06.00 |
-| Approved oleh petugas | Kapan saja untuk kondisi mendesak, `cancel_reason` wajib |
-| Pending saat mulai | Scheduler ubah jadi `rejected`, `processed_by` NULL |
-| Maintenance | Tidak mengubah reservasi otomatis — petugas membatalkan manual |
-
-### Laporan kerusakan
-
-- Kategori: `kerusakan_fisik`, `kelistrikan`, `kebersihan`, `perlengkapan`, `lainnya`
-- Jika `lainnya` → `other_category` wajib (maks 100 karakter). Selain itu **harus NULL**
-- Foto wajib satu, nama file dibuat acak server
-- `resolution_note` wajib untuk `selesai`/`ditolak`
-- **Tidak ada** `handled_by`/`handled_at`
-- Status laporan dan status fasilitas **independen**
-
-### Privasi
-
-Respons publik tidak boleh memuat `user_id`, nama pemohon, email, atau `purpose`. Batasi kolom di query — bukan disembunyikan dengan CSS.
-
-### Akun
-
-- Registrasi publik **selalu** `role=pengguna` + `account_status=pending`. Input role dari client diabaikan
-- Petugas tidak pernah registrasi mandiri
-- Hanya `active` yang bisa login
-
----
-
-## 4. Delapan tabel
-
+```text
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/        # Controller umum, Officer/, dan Admin/
+│   │   ├── Middleware/         # Pembatasan akses per peran
+│   │   └── Requests/           # Validasi input sisi server
+│   ├── Models/                 # Model Eloquent
+│   ├── Services/               # Ketersediaan, persetujuan, dan rekap
+│   └── Support/Status.php      # Konstanta status, peran, dan batas durasi
+├── config/                     # Konfigurasi aplikasi dan basis data
+├── database/
+│   ├── migrations/             # Struktur tabel
+│   └── seeders/                # Data awal
+├── lang/id/                    # Pesan validasi bahasa Indonesia
+├── public/
+│   ├── css/                    # Tema tampilan
+│   ├── js/                     # Validasi client dan interaksi AJAX
+│   └── images/brand/           # Logo SORA
+├── resources/views/            # Halaman Blade
+├── routes/web.php              # Definisi route
+└── tests/                      # Pengujian PHP dan JavaScript
 ```
-users  faculties  buildings  facilities
-                                 ├── room_details      (ruang_kelas, aula, laboratorium)
-                                 └── equipment_details (alat)
-reservations   damage_reports
-```
 
-**Urutan migration:** `users` → `faculties` → `buildings` → `facilities` → `room_details` & `equipment_details` → `reservations` → `damage_reports`
+## Menjalankan Proyek
 
-**Invariant penting:**
-- `faculty_id` NULL = universitas (bukan data kosong). `building_id` NULL = luar gedung
-- Jika `building_id` terisi, `faculty_id` fasilitas harus sama dengan `faculty_id` gedung
-- `capacity` wajib >0 untuk tempat, NULL untuk alat
-- `quantity` selalu 1 untuk tempat, ≥1 untuk alat
-- Fasilitas/akun bersejarah **tidak dihapus** — pakai status `inactive`
-- `type` tidak boleh diubah setelah ada reservasi/laporan
+### Prasyarat
 
-Detail kolom, constraint, dan index ada di PRD bagian 9.
+- PHP 8.2 atau lebih baru
+- Composer
+- MySQL atau MariaDB, misalnya melalui XAMPP atau Laragon
 
----
+### Langkah instalasi
 
-## 5. Setup
+Pastikan layanan MySQL berjalan, lalu jalankan perintah berikut satu per satu:
 
 ```bash
 composer install
@@ -193,17 +156,16 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-Sesuaikan `.env`:
-```
+Buat basis data `ppk_reservasi`, lalu sesuaikan pengaturan berikut di `.env`:
+
+```env
 DB_CONNECTION=mysql
 DB_DATABASE=ppk_reservasi
 DB_USERNAME=root
 DB_PASSWORD=
-SESSION_DRIVER=file
-APP_TIMEZONE=Asia/Jakarta
 ```
 
-Buat database di phpMyAdmin, lalu:
+Siapkan tabel dan data awal:
 
 ```bash
 php artisan migrate --seed
@@ -211,146 +173,17 @@ php artisan storage:link
 php artisan serve
 ```
 
-Buka `http://localhost:8000`. Nyalakan MySQL lewat control panel — Apache tidak perlu.
+Buka `http://localhost:8000`.
 
-Untuk menguji auto-reject: `php artisan schedule:work` di terminal terpisah.
+> Pada PowerShell versi lama, jalankan perintah satu per satu karena `&&` tidak didukung.
 
----
+### Akun demo
 
-## 6. Alur kerja git
-
-```bash
-git checkout main && git pull
-git checkout -b p2/availability-service
-# ... kerjakan ...
-git add . && git commit -m "Tambah perhitungan ketersediaan slot"
-git push -u origin p2/availability-service
-# pull request → review → merge
-```
-
-Setelah pull, jalankan `php artisan migrate` jika P1 menambah migration.
-
-- Commit wajib dari semua anggota, satu commit satu perubahan logis
-- Jangan commit `.env`, vendor, atau `storage/app/public/reports`
-- Setiap integrasi lintas domain sebutkan dampak route, model, migration, dan test
-
----
-
-## 7. Cara memakai AI
-
-**Prompt yang baik:**
-```
-Baca README.md dan PRD bagian 7.2 dulu. Saya P2. Buat
-ReservationAvailabilityService untuk menghitung slot tersedia,
-termasuk cabang pooled stock untuk alat. Jangan sentuh controller.
-```
-
-**Prompt yang buruk:**
-```
-Buatkan sistem reservasi lengkap
-```
-
-**Aturan:**
-- Baca kode sebelum menerima — jangan setuju tanpa membaca
-- Kalau tidak paham, minta AI menjelaskan sampai paham
-- Jangan minta AI mengerjakan domain orang lain
-- Commit atas nama sendiri; kode hasil AI tetap tanggung jawab kamu
-
-**Kenapa penting:** presentasi UTS punya 10–15 menit tanya jawab. Pertanyaan yang paling mungkin:
-
-1. Kenapa validasi harus di server?
-2. Bagaimana sistem mencegah double booking saat dua petugas approve bersamaan?
-3. Bagaimana sistem menyembunyikan detail pemohon dari pengunjung?
-4. Bagaimana sistem mencegah orang mendaftar sebagai petugas?
-5. Kenapa pending tidak memblokir slot?
-
-Setiap anggota harus bisa menjelaskan bagiannya sendiri.
-
----
-
-## 8. Checklist sebelum push
-
-- [ ] `php artisan serve` jalan tanpa error
-- [ ] Diuji dengan akun role yang sesuai
-- [ ] Akses lewat URL langsung dengan role salah → ditolak
-- [ ] Ganti ID di URL ke milik orang lain → 403/404
-- [ ] Kirim data tidak valid ke server → ditolak
-- [ ] Untuk fitur approve: diuji dua request bersamaan
-- [ ] Tidak ada `dd()`, `dump()`, `console.log` tertinggal
-- [ ] `.env` tidak ter-commit
-- [ ] Screenshot fitur sudah diambil
-
----
-
-## 9. Yang masih perlu diputuskan tim
-
-Angkat ke grup, jangan putuskan sendiri.
-
-| Hal | Catatan |
-|---|---|
-| **Tier inti vs peningkatan** | PRD menandai semuanya wajib. Dengan sisa waktu terbatas, tim perlu menyepakati apa yang boleh dilepas tanpa kehilangan user story. Kandidat peningkatan: pooled stock alat, normalisasi fakultas/gedung, XLSX, automated test |
-| **Penamaan status campur** | Reservasi/akun/fasilitas pakai Inggris (`active`, `approved`, `cancelled`), laporan pakai Indonesia (`baru`, `diproses`, `selesai`). Samakan untuk mengurangi salah ketik |
-| **Scheduler butuh cron** | Dosen tidak akan menjalankan `schedule:work` saat menguji. Pertimbangkan fallback sweep sebagai mekanisme utama |
-| **Durasi alat 780 menit** | PRD bagian 7.1 — pastikan ini disengaja, bukan salah ketik |
-| **CSV dan XLSX sekaligus** | US17 menulis "CSV/Excel/PDF" yang berarti pilih salah satu. XLSX adalah pekerjaan opsional |
-
-Perubahan pada tabel, status, jam operasional, batas durasi, formula rekap, atau lifecycle **wajib menaikkan versi PRD** dengan alasan, dampak migration, dampak pengujian, dan siapa yang menyetujui.
-
-### Riwayat perubahan
-
-| Tanggal | Yang berubah | Diputuskan oleh |
+| Peran | Email | Password |
 |---|---|---|
-| 17 Sep 2026 | PRD v1.0 — baseline final | Tim |
-| | Semua migration dipegang P1; CRUD fakultas/gedung pindah ke P1 | |
+| Admin | `admin@kampus.test` | `Password123!` |
+| Petugas | `petugas@kampus.test` | `Password123!` |
+| Pengguna | `pengguna@kampus.test` | `Password123!` |
+| Pengguna (menunggu verifikasi) | `pending@kampus.test` | `Password123!` |
 
----
-
-## 10. Akun testing
-
-Dibuat oleh seeder.
-
-| Role | Email | Password |
-|---|---|---|
-| Admin | _(isi)_ | |
-| Petugas | | |
-| Pengguna (active) | | |
-| Pengguna (pending) | | |
-
-Akun pending dipakai menguji bahwa login menolaknya.
-
----
-
-## 11. Kalau error
-
-| Gejala | Penyebab |
-|---|---|
-| `could not find driver` | `DB_CONNECTION` belum `mysql` → perbaiki `.env`, `php artisan config:clear` |
-| Halaman error padahal cuma view | MySQL belum nyala, atau `SESSION_DRIVER` belum `file` |
-| 404 padahal file Blade ada | Route belum didaftarkan. URL ditentukan `routes/web.php`, bukan nama file |
-| Foto laporan tidak muncul | `php artisan storage:link` belum dijalankan |
-| Migration error setelah pull | Jalankan `php artisan migrate` |
-| Pending tidak auto-reject | Scheduler belum jalan → `php artisan schedule:work` |
-| Waktu meleset 7 jam | `APP_TIMEZONE` belum `Asia/Jakarta` |
-
----
-
-## 12. Pengumpulan
-
-Satu file Word: nama dan NIM anggota, pembagian tugas, link Google Drive (source code + `.sql` + pendukung), informasi setting, informasi login tiap aktor, screenshot antarmuka dan penjelasan tiap fitur.
-
-Laravel memakai migration, tapi pengumpulan tetap meminta file `.sql` — export lewat phpMyAdmin sebelum submit.
-
-**Uji seluruh instruksi setup di laptop yang belum pernah dipakai mengerjakan proyek ini.**
-
-Presentasi UTS: 10 menit presentasi + 10–15 menit tanya jawab. Cakupan: latar belakang, fitur utama, demo sistem, kendala yang dihadapi. PRD bagian 17 (Kelemahan dan ruang berkembang) adalah bahan yang tepat untuk bagian kendala.
-
----
-
-## 13. Dokumen terkait
-
-| Dokumen | Isi |
-|---|---|
-| PRD v1.0 | Sumber kebutuhan — aturan bisnis, data dictionary, alur, acceptance |
-| Project PPK 2026.pdf | Ketentuan tugas dari dosen — batas terluar |
-| `README.md` | Tata cara kerja harian dan kontrak AI (file ini) |
-| `composer.json` / `composer.lock` | Sumber versi package yang benar |
+Akun menunggu verifikasi sengaja tidak dapat login sampai disetujui admin. Akun-akun ini hanya untuk pengembangan lokal.
